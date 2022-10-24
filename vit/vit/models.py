@@ -1,10 +1,14 @@
+
 from functools import partial
 import flax.linen as nn
 from typing import Dict, Optional, Tuple
 import jax.numpy as jnp
 from modules import TransformerEncoderBlock
 from pos_embeddings import TransformerEmbeddings
-
+# https://huggingface.co/flax-community/vit-gpt2/tree/main/vit_gpt2
+# https://github.com/google/flax/blob/main/examples/nlp_seq/train.py
+# https://github.com/google/flax/blob/main/examples/imagenet/train.py
+# https://github.com/google/flax/blob/main/examples/wmt/models.py
 class TransformerHead(nn.Module):
     output_dim: int
     training: bool
@@ -13,11 +17,11 @@ class TransformerHead(nn.Module):
 
     @nn.compact
     def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
-        out = nn.Dropout(rate = self.dropout_rate, deterministic = self.training)(out)
+        out = nn.Dropout(rate = self.dropout_rate, deterministic = self.training)(x)
         out = nn.Dense(self.output_dim, use_bias = self.use_bias)(out)
         return out
 
-class VisualTransormer(nn.Module):
+class VisualTransformer(nn.Module):
     n_blocks: int
     block_config: Dict
     output_dim: int
@@ -34,10 +38,10 @@ class VisualTransormer(nn.Module):
             patch_size = self.img_params[1],
             training = self.block_config["training"]
         )
-
+        
         self.encoder_layers = [
-            partial(TransformerEncoderBlock, **self.block_config) \
-            for _ in self.n_blocks
+            TransformerEncoderBlock(**self.block_config.pop("latent_dim")[0]) \
+            for _ in range(self.n_blocks)
         ]
 
         self.head = TransformerHead(output_dim = self.output_dim,
@@ -46,8 +50,10 @@ class VisualTransormer(nn.Module):
     def __call__(self,  x: jnp.ndarray) -> jnp.ndarray:
 
         out = self.apply_embedding(x)
+        
         out = self.encoder_layers[0](out)
         for layer in self.encoder_layers[1:]:
             out = layer(out)
+
         out = self.head(out[:, self.cls_index, :])
         return out

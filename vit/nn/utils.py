@@ -1,0 +1,65 @@
+from pathlib import Path
+from flax.training import checkpoints
+import os
+from flax.training.train_state import TrainState
+import jax.numpy as jnp
+import optax
+from dataclasses import dataclass, field
+from flax.serialization import (
+    to_state_dict, msgpack_serialize, from_bytes
+)
+import wandb
+
+def save_checkpoint(state: TrainState,
+                    checkpoint_dir: Path) -> None:
+    os.makedirs(checkpoint_dir, exist_ok = True)
+    checkpoints.save_checkpoint(
+        ckpt_dir = checkpoint_dir,
+        prefix = "chkpnt_",
+        target = state,
+        step = state.step,
+        overwrite = False, 
+        keep = 1
+    )
+
+def restore_checkpoint(state: TrainState, 
+                      checkpoint_dir: Path) -> TrainState:
+    
+    assert os.path.isdir(checkpoint_dir)
+    return checkpoints.restore_checkpoint(
+        ckpt_dir = checkpoint_dir,
+        target = state,
+        step = state.step,
+        prefix = "chkpnt_"
+    )
+
+
+####wandb utils
+def save_checkpoint_wandb(ckpt_path, state: TrainState, step: int):
+    with open(ckpt_path, "wb") as outfile:
+        outfile.write(msgpack_serialize(to_state_dict(state)))
+    artifact = wandb.Artifact(
+        f'{wandb.run.name}-checkpoint', type='dataset'
+    )
+    artifact.add_file(ckpt_path)
+    wandb.log_artifact(artifact, aliases=["latest", f"step_{step}"])
+
+
+def restore_checkpoint_wandb(ckpt_file, state: TrainState):
+    artifact = wandb.use_artifact(
+        f'{wandb.run.name}-checkpoint:latest'
+    )
+    artifact_dir = artifact.download()
+    ckpt_path = os.path.join(artifact_dir, ckpt_file)
+    with open(ckpt_path, "rb") as data_file:
+        byte_data = data_file.read()
+    return from_bytes(state, byte_data)
+####wandb utils
+
+
+@dataclass
+class Config:
+    weight_decay: float
+    lr: float
+    model_name: str
+    warmup_epochs: int

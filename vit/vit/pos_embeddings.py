@@ -2,6 +2,7 @@ import flax.linen as nn
 import jax.numpy as jnp
 import jax.random as jr
 import jax
+import numpy as np
 
 class PatchEmbeddings(nn.Module):
 
@@ -26,6 +27,29 @@ class PatchEmbeddings(nn.Module):
         return jnp.reshape(x, (batch_size, -1, channels))
 
 
+def sinusoidal_init(max_len=2048,
+                    min_scale=1.0,
+                    max_scale=10000.0):
+
+  def init(key, shape, dtype = np.float32):
+    d_feature = shape[-1]
+    pe = np.zeros((max_len, d_feature), dtype=dtype)
+    position = np.arange(0, max_len)[:, np.newaxis]
+    scale_factor = -np.log(max_scale / min_scale) / (d_feature // 2 - 1)
+    div_term = min_scale * np.exp(np.arange(0, d_feature // 2) * scale_factor)
+    pe[:, :d_feature // 2] = np.sin(position * div_term)
+    pe[:, d_feature // 2: 2 * (d_feature // 2)] = np.cos(position * div_term)
+    pe = pe[np.newaxis, :, :]  # [1, max_len, d_feature]
+    return jnp.array(pe)
+
+  return init
+
+"""
+      pos_embedding = sinusoidal_init(max_len=config.max_len)(None,
+                                                              pos_emb_shape,
+                                                              None)
+"""
+
 class TransformerEmbeddings(nn.Module):
     """Construct the CLS token, position and patch embeddings."""
 
@@ -40,7 +64,7 @@ class TransformerEmbeddings(nn.Module):
         self.cls_token = self.param("cls_token", 
                                     nn.initializers.zeros, 
                                     (1, 1, self.latent_dim))
-        self.patch_embeddings = PatchEmbeddings(self.latent_dim,
+        self.patch_embeddings = PatchEmbeddings(latent_dim = self.latent_dim,
                                                 image_size = self.image_size,
                                                 patch_size= self.patch_size,
                                                 dtype = self.dtype)
