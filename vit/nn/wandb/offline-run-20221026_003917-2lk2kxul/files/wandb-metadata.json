@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.31",
+    "python": "3.9.13",
+    "heartbeatAt": "2022-10-25T21:39:17.897916",
+    "startedAt": "2022-10-25T21:39:17.472670",
+    "docker": null,
+    "gpu": "NVIDIA GeForce MX230",
+    "gpu_count": 1,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/alex_ch/flax_vit/vit/nn/test_training.py",
+    "codePath": "vit/nn/test_training.py",
+    "git": {
+        "remote": "https://github.com/alexunderch/flax_vit.git",
+        "commit": "93bea25c50fc203fbf2e56cd032dac654c36e35d"
+    },
+    "email": "chernyavskij.as@phystech.edu",
+    "root": "/home/alex_ch/flax_vit",
+    "host": "DESKTOP-8V48N2L",
+    "username": "alex_ch",
+    "executable": "/home/alex_ch/.venvs/flax_env/bin/python"
+}

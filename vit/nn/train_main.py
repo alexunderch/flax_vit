@@ -1,12 +1,15 @@
 import sys
 sys.path.append("..")
 from typing import Dict, List, Optional, Tuple
-from train_utils import (pmap_steps, 
+from train_utils import (make_update_fn, 
                         accumulate_metrics, 
                         create_learning_rate_fn, 
                         init_train_state
                         )
-from tf_data_processing.input_pipeline import prepare_data, get_classes, prefetch
+from tf_data_processing.input_pipeline import (prepare_data, 
+                                               get_classes, 
+                                               prefetch
+                                                )
 from common_utils import (convert_hidden_state_to_image, 
                           save_checkpoint_wandb, 
                           restore_checkpoint_wandb,
@@ -31,7 +34,6 @@ def full_trainining(
                     ) -> Tuple[TrainState, TrainState]:
 
     rng = jax.random.PRNGKey(seed = seed)
-    _, dropout_rng = jax.random.split(rng)
     n_prefetch = jax.device_count()
     train_dataset, eval_dataset, test_dataset, ds_info = prepare_data(
                                                                       batch_size = config["batch_size"],
@@ -57,8 +59,11 @@ def full_trainining(
                           **logger_kwargs
                           )
     #TODO: replicas, pmap
-    train_step, eval_step = pmap_steps()
-    # state = flax.jax_utils.replicate(state)
+    eval_step = None
+    train_step = make_update_fn(None, 102, config)
+    _, dropout_rng =  jax.random.split(rng)
+
+    state = flax.jax_utils.replicate(state)
 
     for epoch in tqdm(range(1, config["num_epochs"] + 1)):
         best_epoch_eval_loss = jnp.inf
@@ -74,15 +79,19 @@ def full_trainining(
                         image = batch[0],
                         label = batch[1]
                         )
+            batch = flax.jax_utils.replicate(batch)
+            
             state, metrics = train_step(
+                                        # num_classes = num_classes, 
+                                        # config = config,
                                         state = state,
                                         batch = batch,
-                                        learning_rate_fn = create_learning_rate_fn(config, 
-                                                                                   base_learning_rate = config["learning_rate"],
-                                                                                   steps_per_epoch = len(train_dataset)),
-                                        num_classes = num_classes, 
-                                        config = config,
-                                        dropout_rng = dropout_rng
+                                        rng = flax.jax_utils.replicate(dropout_rng),
+                                        # learning_rate_fn = create_learning_rate_fn(config, 
+                                        #                                            base_learning_rate = config["learning_rate"],
+                                        #                                            steps_per_epoch = len(train_dataset)),
+                                       
+                                       
                                         )
             batch_metrics["train"].append(metrics)
 
@@ -102,7 +111,7 @@ def full_trainining(
                                 state = state, 
                                 batch = batch, 
                                 num_classes = num_classes, 
-                                dropout_rng = dropout_rng
+                                rng = dropout_rng
                                 )
             batch_metrics["eval"].append(metrics)
 
@@ -127,7 +136,7 @@ def full_trainining(
                                 state = restored_best_state, 
                                 batch = batch, 
                                 num_classes = len(get_classes(...)), 
-                                dropout_rng = dropout_rng
+                                rng = dropout_rng
                                 )
             batch_metrics["test"].append(metrics)
 

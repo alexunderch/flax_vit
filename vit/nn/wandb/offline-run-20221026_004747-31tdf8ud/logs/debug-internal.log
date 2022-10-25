@@ -1,0 +1,98 @@
+2022-10-26 00:47:47,874 INFO    StreamThr :17876 [internal.py:wandb_internal():88] W&B internal server running at pid: 17876, started at: 2022-10-26 00:47:47.873483
+2022-10-26 00:47:47,877 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: status
+2022-10-26 00:47:47,879 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: status
+2022-10-26 00:47:47,881 INFO    WriterThread:17876 [datastore.py:open_for_write():75] open: /home/alex_ch/flax_vit/vit/nn/wandb/offline-run-20221026_004747-31tdf8ud/run-31tdf8ud.wandb
+2022-10-26 00:47:47,898 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: run_start
+2022-10-26 00:47:48,245 DEBUG   HandlerThread:17876 [meta.py:__init__():34] meta init
+2022-10-26 00:47:48,245 DEBUG   HandlerThread:17876 [meta.py:__init__():49] meta init done
+2022-10-26 00:47:48,245 DEBUG   HandlerThread:17876 [meta.py:probe():215] probe
+2022-10-26 00:47:48,351 DEBUG   HandlerThread:17876 [meta.py:_setup_git():205] setup git
+2022-10-26 00:47:48,363 DEBUG   HandlerThread:17876 [meta.py:_setup_git():212] setup git done
+2022-10-26 00:47:48,363 DEBUG   HandlerThread:17876 [meta.py:_save_pip():53] save pip
+2022-10-26 00:47:48,365 DEBUG   HandlerThread:17876 [meta.py:_save_pip():67] save pip done
+2022-10-26 00:47:48,365 DEBUG   HandlerThread:17876 [meta.py:probe():253] probe done
+2022-10-26 00:47:49,585 DEBUG   SenderThread:17876 [sender.py:send():303] send: exit
+2022-10-26 00:47:49,585 INFO    SenderThread:17876 [sender.py:send_exit():442] handling exit code: 1
+2022-10-26 00:47:49,585 INFO    SenderThread:17876 [sender.py:send_exit():444] handling runtime: 1
+2022-10-26 00:47:49,585 INFO    SenderThread:17876 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-10-26 00:47:49,586 INFO    SenderThread:17876 [sender.py:send_exit():450] send defer
+2022-10-26 00:47:49,586 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,586 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 0
+2022-10-26 00:47:49,586 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,586 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 0
+2022-10-26 00:47:49,586 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 1
+2022-10-26 00:47:49,587 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,587 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 1
+2022-10-26 00:47:49,924 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,924 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 1
+2022-10-26 00:47:49,924 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 2
+2022-10-26 00:47:49,925 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,925 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 2
+2022-10-26 00:47:49,925 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,926 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 2
+2022-10-26 00:47:49,926 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 3
+2022-10-26 00:47:49,926 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,926 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 3
+2022-10-26 00:47:49,927 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,927 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 3
+2022-10-26 00:47:49,927 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 4
+2022-10-26 00:47:49,927 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,927 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 4
+2022-10-26 00:47:49,928 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,928 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 4
+2022-10-26 00:47:49,928 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 5
+2022-10-26 00:47:49,928 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,928 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 5
+2022-10-26 00:47:49,928 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,928 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 5
+2022-10-26 00:47:49,928 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 6
+2022-10-26 00:47:49,929 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,929 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 6
+2022-10-26 00:47:49,929 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,929 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 6
+2022-10-26 00:47:49,929 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 7
+2022-10-26 00:47:49,929 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,929 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 7
+2022-10-26 00:47:49,930 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,930 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 7
+2022-10-26 00:47:49,930 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 8
+2022-10-26 00:47:49,930 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,930 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 8
+2022-10-26 00:47:49,930 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,931 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 8
+2022-10-26 00:47:49,931 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 9
+2022-10-26 00:47:49,931 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,931 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 9
+2022-10-26 00:47:49,931 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,931 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 9
+2022-10-26 00:47:49,932 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 10
+2022-10-26 00:47:49,932 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,932 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 10
+2022-10-26 00:47:49,932 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,932 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 10
+2022-10-26 00:47:49,932 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 11
+2022-10-26 00:47:49,933 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,933 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 11
+2022-10-26 00:47:49,933 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,933 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 11
+2022-10-26 00:47:49,933 INFO    SenderThread:17876 [sender.py:transition_state():463] send defer: 12
+2022-10-26 00:47:49,934 DEBUG   SenderThread:17876 [sender.py:send():303] send: final
+2022-10-26 00:47:49,934 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: defer
+2022-10-26 00:47:49,934 INFO    HandlerThread:17876 [handler.py:handle_request_defer():161] handle defer: 12
+2022-10-26 00:47:49,935 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: defer
+2022-10-26 00:47:49,935 INFO    SenderThread:17876 [sender.py:send_request_defer():459] handle sender defer: 12
+2022-10-26 00:47:49,936 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: poll_exit
+2022-10-26 00:47:49,936 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: poll_exit
+2022-10-26 00:47:49,937 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: poll_exit
+2022-10-26 00:47:49,937 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: poll_exit
+2022-10-26 00:47:49,939 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: server_info
+2022-10-26 00:47:49,939 DEBUG   SenderThread:17876 [sender.py:send_request():317] send_request: server_info
+2022-10-26 00:47:49,940 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: get_summary
+2022-10-26 00:47:49,941 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: sampled_history
+2022-10-26 00:47:49,942 INFO    MainThread:17876 [wandb_run.py:_footer_history_summary_info():3377] rendering history
+2022-10-26 00:47:49,942 INFO    MainThread:17876 [wandb_run.py:_footer_history_summary_info():3409] rendering summary
+2022-10-26 00:47:49,943 DEBUG   HandlerThread:17876 [handler.py:handle_request():138] handle_request: shutdown
+2022-10-26 00:47:49,943 INFO    HandlerThread:17876 [handler.py:finish():814] shutting down handler
+2022-10-26 00:47:50,935 INFO    WriterThread:17876 [datastore.py:close():279] close: /home/alex_ch/flax_vit/vit/nn/wandb/offline-run-20221026_004747-31tdf8ud/run-31tdf8ud.wandb
+2022-10-26 00:47:50,940 INFO    SenderThread:17876 [sender.py:finish():1331] shutting down sender
+2022-10-26 00:47:50,951 INFO    MainThread:17876 [internal.py:handle_exit():78] Internal process exited

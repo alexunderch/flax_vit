@@ -69,58 +69,66 @@ def create_learning_rate_fn(
     return schedule_fn
 
 
-@functools.partial(jax.jit, static_argnums=(2, 3))
-def train_step(state: TrainState, 
-               batch: Dict, 
-               learning_rate_fn: Callable,
-               num_classes: int,
-               config: Dict,
-               dropout_rng = None) -> Tuple[TrainState, Dict]:
 
-    def loss_fn(params):
-        logits = state.apply_fn(dict(params = params), 
-                                batch['image'],
-                                rngs = dict(dropout= dropout_rng))                       
-        loss = cross_entropy_loss(logits, batch['label'], num_classes)
+def make_update_fn(learning_rate_fn: Callable, 
+                   num_classes: int,
+                   config: Dict,
+                   ) -> Callable:
+
+    def train_step(
+                state: TrainState, 
+                batch: Dict, 
+                rng,
+                ) -> Tuple[TrainState, Dict]:
+
+        def loss_fn(params):
+            logits = state.apply_fn(dict(params = params), 
+                                    batch['image'],
+                                    rngs = dict(dropout = rng))                       
+            loss = cross_entropy_loss(logits, batch['label'], num_classes)
+            
+            weight_penalty_params = jax.tree_util.tree_leaves(params)
+            weight_l2 = sum(jnp.sum(x ** 2) 
+                            for x in weight_penalty_params 
+                            if x.ndim > 1)
         
-        weight_penalty_params = jax.tree_util.tree_leaves(params)
-        weight_l2 = sum(jnp.sum(x ** 2) 
-                        for x in weight_penalty_params 
-                        if x.ndim > 1)
+            loss = loss + config['weight_decay'] * weight_l2
+            return loss, logits
+
+        grad_fn = jax.value_and_grad(loss_fn, has_aux = True)
+        
+        (_, logits), grads = grad_fn(state.params)
+        new_state = state.apply_gradients(grads = grads)
+
+        metrics = compute_metrics(logits, batch['label'], num_classes)
+        metrics['learning_rate'] = learning_rate_fn(state.step)
+
+        return new_state, metrics
     
-        loss = loss + config["weight_decay"] * weight_l2
-        return loss, logits
+    return jax.pmap(jax.jit(train_step), axis_name = "batch")
 
-    lr = learning_rate_fn(state.step)
-    grad_fn = jax.value_and_grad(loss_fn, has_aux = True)
-    (_, logits), grads = grad_fn(state.params)
-    new_state = state.apply_gradients(grads = grads)
+def make_update_fn(num_classes: int,
+                   config: Dict,
+                   ) -> Callable:
 
-    metrics = compute_metrics(logits, batch['label'], num_classes)
-    metrics['learning_rate'] = lr
-
-    return new_state, metrics
-
-@functools.partial(jax.jit, static_argnums = 2)
-def eval_step(state: TrainState, 
-              batch: Dict,
-              num_classes: int,
-              dropout_rng = None,
-              ) -> Dict:
-    logits = state.apply_fn(dict(params = state.params), 
-                            batch['image'], 
-                            rngs = dict(dropout = dropout_rng))
-    return compute_metrics(logits, batch['label'], num_classes)
-
-
-def pmap_steps() -> Tuple:
-    return train_step, eval_step
-           
-def create_optimizer(clip_parameter: float, 
-                    learning_rate: float):
+    def eval_step(state: TrainState, 
+                batch: Dict,
+                rng = None,
+                ) -> Dict:
+        logits = state.apply_fn(dict(params = state.params), 
+                                batch['image'], 
+                                rngs = dict(dropout = rng))
+        return compute_metrics(logits, batch['label'], num_classes)
+    
+    return jax.pmap(jax.jit(eval_step), axis_name = "batch")
+    
+def optimizer(clip_parameter: float, 
+             learning_rate: float,
+             config: Dict):
     return optax.chain(
                         optax.clip_by_global_norm(clip_parameter),
-                        optax.adam(learning_rate = learning_rate)
+                        optax.adam(learning_rate = learning_rate),
+                        optax.join_schedules(create_learning_rate_fn(...), [config["warmip_steps"]])
                     )
 
 def init_train_state(
@@ -134,6 +142,6 @@ def init_train_state(
     variables = model.init(random_key, jnp.ones(shape))
     return TrainState.create(   
                                 apply_fn = model.apply,
-                                tx = create_optimizer(clip_parameter, learning_rate),
+                                tx = optimizer(clip_parameter, learning_rate),
                                 params = variables['params'],
                             )

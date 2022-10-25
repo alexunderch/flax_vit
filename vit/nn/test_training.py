@@ -11,7 +11,7 @@ import jax
 import jax.numpy as jnp
 import optax
 from vit.models import VisualTransformer
-from train_utils import train_step, eval_step, create_learning_rate_fn, init_train_state
+from train_utils import  create_learning_rate_fn, init_train_state
 from train_main import full_trainining
 
 
@@ -104,7 +104,7 @@ def test_full_training():
                         warmup_epochs = 1,
                         num_epochs=  3,
                         clip_parameter = 1.,
-                        batch_size = 2
+                        batch_size = 1
                         )
                 )
 
@@ -115,7 +115,7 @@ def test_full_training():
 
     dataset_kwargs = dict(
         dataset_name = "caltech101",
-        validation_split = .1,
+        validation_split = .3,
         force_download = False,
 
     )

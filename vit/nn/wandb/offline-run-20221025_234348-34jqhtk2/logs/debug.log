@@ -1,0 +1,22 @@
+2022-10-25 23:43:48,839 INFO    MainThread:3429 [wandb_setup.py:_flush():68] Configure stats pid to 3429
+2022-10-25 23:43:48,839 INFO    MainThread:3429 [wandb_setup.py:_flush():68] Loading settings from /home/alex_ch/.config/wandb/settings
+2022-10-25 23:43:48,839 INFO    MainThread:3429 [wandb_setup.py:_flush():68] Loading settings from /home/alex_ch/flax_vit/vit/nn/wandb/settings
+2022-10-25 23:43:48,839 INFO    MainThread:3429 [wandb_setup.py:_flush():68] Loading settings from environment variables: {'_require_service': 'True'}
+2022-10-25 23:43:48,839 INFO    MainThread:3429 [wandb_setup.py:_flush():68] Inferring run settings from compute environment: {'program_relpath': 'vit/nn/test_training.py', 'program': '/home/alex_ch/flax_vit/vit/nn/test_training.py'}
+2022-10-25 23:43:48,839 INFO    MainThread:3429 [wandb_init.py:_log_setup():476] Logging user logs to /home/alex_ch/flax_vit/vit/nn/wandb/offline-run-20221025_234348-34jqhtk2/logs/debug.log
+2022-10-25 23:43:48,839 INFO    MainThread:3429 [wandb_init.py:_log_setup():477] Logging internal logs to /home/alex_ch/flax_vit/vit/nn/wandb/offline-run-20221025_234348-34jqhtk2/logs/debug-internal.log
+2022-10-25 23:43:48,840 INFO    MainThread:3429 [wandb_init.py:init():516] calling init triggers
+2022-10-25 23:43:48,840 INFO    MainThread:3429 [wandb_init.py:init():519] wandb.init called with sweep_config: {}
+config: {'model_config': {'n_blocks': 3, 'block_config': {'latent_dim': 512, 'latent_ffd_dim': 1203, 'n_heads': 8, 'training': True, 'dropout_rate_ffd': 0.1, 'dropout_rate_att': 0.5}, 'dropout_embedding': 0.5, 'img_params': (224, 16), 'output_dim': 102}, 'weight_decay': 0.001, 'learning_rate': 1e-05, 'warmup_epochs': 1, 'num_epochs': 3, 'clip_parameter': 1.0, 'batch_size': 1}
+2022-10-25 23:43:48,840 INFO    MainThread:3429 [wandb_init.py:init():569] starting backend
+2022-10-25 23:43:48,840 INFO    MainThread:3429 [wandb_init.py:init():573] setting up manager
+2022-10-25 23:43:48,844 INFO    MainThread:3429 [backend.py:_multiprocessing_setup():102] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2022-10-25 23:43:48,846 INFO    MainThread:3429 [wandb_init.py:init():580] backend started and connected
+2022-10-25 23:43:48,851 INFO    MainThread:3429 [wandb_init.py:init():658] updated telemetry
+2022-10-25 23:43:48,869 INFO    MainThread:3429 [wandb_init.py:init():728] starting run threads in backend
+2022-10-25 23:43:49,088 INFO    MainThread:3429 [wandb_run.py:_console_start():1980] atexit reg
+2022-10-25 23:43:49,089 INFO    MainThread:3429 [wandb_run.py:_redirect():1838] redirect: SettingsConsole.WRAP_RAW
+2022-10-25 23:43:49,090 INFO    MainThread:3429 [wandb_run.py:_redirect():1903] Wrapping output streams.
+2022-10-25 23:43:49,090 INFO    MainThread:3429 [wandb_run.py:_redirect():1925] Redirects installed.
+2022-10-25 23:43:49,091 INFO    MainThread:3429 [wandb_init.py:init():765] run started, returning control to user process
+2022-10-25 23:43:50,603 WARNING MsgRouterThr:3429 [router.py:message_loop():77] message_loop has been closed

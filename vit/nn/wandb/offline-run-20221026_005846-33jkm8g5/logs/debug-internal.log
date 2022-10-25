@@ -1,0 +1,14 @@
+2022-10-26 00:58:46,049 INFO    StreamThr :19690 [internal.py:wandb_internal():88] W&B internal server running at pid: 19690, started at: 2022-10-26 00:58:46.048499
+2022-10-26 00:58:46,053 DEBUG   HandlerThread:19690 [handler.py:handle_request():138] handle_request: status
+2022-10-26 00:58:46,054 DEBUG   SenderThread:19690 [sender.py:send_request():317] send_request: status
+2022-10-26 00:58:46,056 INFO    WriterThread:19690 [datastore.py:open_for_write():75] open: /home/alex_ch/flax_vit/vit/nn/wandb/offline-run-20221026_005846-33jkm8g5/run-33jkm8g5.wandb
+2022-10-26 00:58:46,071 DEBUG   HandlerThread:19690 [handler.py:handle_request():138] handle_request: run_start
+2022-10-26 00:58:46,416 DEBUG   HandlerThread:19690 [meta.py:__init__():34] meta init
+2022-10-26 00:58:46,416 DEBUG   HandlerThread:19690 [meta.py:__init__():49] meta init done
+2022-10-26 00:58:46,416 DEBUG   HandlerThread:19690 [meta.py:probe():215] probe
+2022-10-26 00:58:46,493 DEBUG   HandlerThread:19690 [meta.py:_setup_git():205] setup git
+2022-10-26 00:58:46,502 DEBUG   HandlerThread:19690 [meta.py:_setup_git():212] setup git done
+2022-10-26 00:58:46,502 DEBUG   HandlerThread:19690 [meta.py:_save_pip():53] save pip
+2022-10-26 00:58:46,503 DEBUG   HandlerThread:19690 [meta.py:_save_pip():67] save pip done
+2022-10-26 00:58:46,503 DEBUG   HandlerThread:19690 [meta.py:probe():253] probe done
+2022-10-26 00:59:37,242 INFO    MainThread:19690 [internal.py:handle_exit():78] Internal process exited

@@ -1,0 +1,19 @@
+2022-10-26 00:49:04,102 INFO    StreamThr :18518 [internal.py:wandb_internal():88] W&B internal server running at pid: 18518, started at: 2022-10-26 00:49:04.101387
+2022-10-26 00:49:04,105 DEBUG   HandlerThread:18518 [handler.py:handle_request():138] handle_request: status
+2022-10-26 00:49:04,107 DEBUG   SenderThread:18518 [sender.py:send_request():317] send_request: status
+2022-10-26 00:49:04,110 INFO    WriterThread:18518 [datastore.py:open_for_write():75] open: /home/alex_ch/flax_vit/vit/nn/wandb/offline-run-20221026_004904-1vn1zx6r/run-1vn1zx6r.wandb
+2022-10-26 00:49:04,127 DEBUG   HandlerThread:18518 [handler.py:handle_request():138] handle_request: run_start
+2022-10-26 00:49:04,487 DEBUG   HandlerThread:18518 [meta.py:__init__():34] meta init
+2022-10-26 00:49:04,488 DEBUG   HandlerThread:18518 [meta.py:__init__():49] meta init done
+2022-10-26 00:49:04,488 DEBUG   HandlerThread:18518 [meta.py:probe():215] probe
+2022-10-26 00:49:04,552 DEBUG   HandlerThread:18518 [meta.py:_setup_git():205] setup git
+2022-10-26 00:49:04,566 DEBUG   HandlerThread:18518 [meta.py:_setup_git():212] setup git done
+2022-10-26 00:49:04,567 DEBUG   HandlerThread:18518 [meta.py:_save_pip():53] save pip
+2022-10-26 00:49:04,567 DEBUG   HandlerThread:18518 [meta.py:_save_pip():67] save pip done
+2022-10-26 00:49:04,567 DEBUG   HandlerThread:18518 [meta.py:probe():253] probe done
+2022-10-26 00:49:57,661 WARNING StreamThr :18518 [internal.py:is_dead():385] Internal process exiting, parent pid 18307 disappeared
+2022-10-26 00:49:57,684 ERROR   StreamThr :18518 [internal.py:wandb_internal():147] Internal process shutdown.
+2022-10-26 00:49:58,636 INFO    WriterThread:18518 [datastore.py:close():279] close: /home/alex_ch/flax_vit/vit/nn/wandb/offline-run-20221026_004904-1vn1zx6r/run-1vn1zx6r.wandb
+2022-10-26 00:49:58,637 INFO    SenderThread:18518 [sender.py:finish():1331] shutting down sender
+2022-10-26 00:49:58,645 INFO    HandlerThread:18518 [handler.py:finish():814] shutting down handler
+2022-10-26 00:49:59,653 INFO    MainThread:18518 [internal.py:handle_exit():78] Internal process exited
