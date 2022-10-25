@@ -8,7 +8,9 @@ from dataclasses import dataclass, field
 from flax.serialization import (
     to_state_dict, msgpack_serialize, from_bytes
 )
+import jax
 import wandb
+
 
 def save_checkpoint(state: TrainState,
                     checkpoint_dir: Path) -> None:
@@ -56,10 +58,14 @@ def restore_checkpoint_wandb(ckpt_file, state: TrainState):
     return from_bytes(state, byte_data)
 ####wandb utils
 
+def checkpoint_exists(ckpt_file) -> bool:
+    return os.path.isfile(ckpt_file)
 
-@dataclass
-class Config:
-    weight_decay: float
-    lr: float
-    model_name: str
-    warmup_epochs: int
+def convert_hidden_state_to_image(input_data: jnp.ndarray, idx: int) -> jnp.ndarray:
+    
+    """"""
+    # input_data = jax.device_get(input_data[idx])
+    # attn_maps = [jax.device_get(m[idx]) for m in attn_maps]
+    # foreach head
+    
+    

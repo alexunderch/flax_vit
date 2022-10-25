@@ -18,7 +18,8 @@ def test_transformer():
                                 output_dim = 2,
                                 dropout_embedding = .5,
                                 img_params = (32, 16))
-    params = model.init(rng, x)
+    params = model.init(rng, x, mask = None)
+    # print(model.get_attention_maps(x)[0].shape)
     print(jax.tree_map(lambda x: x.shape, params))
 
 

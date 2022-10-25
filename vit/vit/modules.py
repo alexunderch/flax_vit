@@ -19,19 +19,18 @@ def scaled_dot_product(q, k, v, mask=None):
 
 class ResidualWrapper(nn.Module):
     fn: nn.Module
+
     @nn.compact
-    def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
-        return x + self.fn(x)     
+    def __call__(self, x: jnp.ndarray, **kwargs) -> jnp.ndarray:
+        return x + self.fn(x, **kwargs)     
 
 class PreNormLayer(nn.Module):
     fn: nn.Module
     norm: Optional[nn.Module] = nn.LayerNorm
 
     @nn.compact
-    def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
-        if isinstance(x, Tuple):
-            return self.fn(self.norm(x[0])), x[1]  
-        return self.fn(self.norm(x))      
+    def __call__(self, x: jnp.ndarray, **kwargs) -> jnp.ndarray:
+        return self.fn(self.norm(x), **kwargs)      
 
 class FeedForwardLayer(nn.Module):
     latent_dim: int
@@ -74,14 +73,14 @@ class MultiHeadSelfAttentionLayer(nn.Module):
         o_dropout = nn.Dropout(self.dropout_rate, deterministic = self.training)
 
         q, k, v = self.prepare_qkv(x)
-        values, _ = self.attention_function(q, k, v, mask = mask)
+        values, _ = jax.vmap(self.attention_function)(q, k, v, mask = mask)
         values = jnp.swapaxes(values, 1, 2)
         values =  o_dropout(values).reshape(batch_size, seq_length, hidden_dim)
         values = nn.Dense(hidden_dim, use_bias = self.use_bias)(values)
                            
         return values
 
-    def get_attention_map(self, x, mask=None):
+    def get_attention_map(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
         q, k, v = self.prepare_qkv(x)
         return self.attention_function(q, k, v, mask = mask)[1]
 
@@ -124,9 +123,9 @@ class TransformerEncoderBlock(nn.Module):
 
         self.residual_norm_ffd = ResidualWrapper(fn = norm_ffd)
 
-    def __call__(self, x: jnp.ndarray) ->  jnp.ndarray:
+    def __call__(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
         return self.residual_norm_ffd(
-            self.residual_norm_attention(x)
+            self.residual_norm_attention(x, mask=mask)
         )
 
         

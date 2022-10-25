@@ -1,10 +1,16 @@
 
+import sys
+sys.path.append(".")
 from functools import partial
 import flax.linen as nn
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 import jax.numpy as jnp
-from modules import TransformerEncoderBlock
-from pos_embeddings import TransformerEmbeddings
+try:
+    from .modules import TransformerEncoderBlock
+    from .pos_embeddings import TransformerEmbeddings
+except:
+    from modules import TransformerEncoderBlock
+    from pos_embeddings import TransformerEmbeddings
 # https://huggingface.co/flax-community/vit-gpt2/tree/main/vit_gpt2
 # https://github.com/google/flax/blob/main/examples/nlp_seq/train.py
 # https://github.com/google/flax/blob/main/examples/imagenet/train.py
@@ -47,13 +53,23 @@ class VisualTransformer(nn.Module):
         self.head = TransformerHead(output_dim = self.output_dim,
                                     training = self.block_config["training"])
 
-    def __call__(self,  x: jnp.ndarray) -> jnp.ndarray:
+    def __call__(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
 
         out = self.apply_embedding(x)
         
-        out = self.encoder_layers[0](out)
+        out = self.encoder_layers[0](out, mask)
         for layer in self.encoder_layers[1:]:
-            out = layer(out)
+            out = layer(out, mask)
 
         out = self.head(out[:, self.cls_index, :])
         return out
+
+    def get_attention_maps(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> List[jnp.ndarray]:
+        """"""
+        # out = self.apply_embedding(x)
+        # out = self.encoder_layers[0](out, mask)
+        # attention_maps = [self.encoder_layers[0].get_attention_map(out, mask)]
+        # for layer in self.encoder_layers[1:]:
+        #     out = layer(out, mask)
+        #     attention_maps.append(layer.get_attention_map(out, mask))
+        # return attention_maps

@@ -82,7 +82,7 @@ class TransformerEmbeddings(nn.Module):
         embeddings = self.patch_embeddings(x)
 
         cls_tokens = jnp.broadcast_to(self.cls_token, (batch_size, 1, self.latent_dim))
-        embeddings = jnp.concatenate((cls_tokens, embeddings), axis=1)
+        embeddings = jax.lax.concatenate((cls_tokens, embeddings), dimension = 1) 
         embeddings = embeddings + self.position_embeddings
         embeddings = self.dropout(embeddings)
         return embeddings
