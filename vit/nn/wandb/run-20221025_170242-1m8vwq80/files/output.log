@@ -1,0 +1,115 @@
+  0%|                                                                                                                                                                                                                                                       | 0/3 [00:01<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 141, in broadcast_shapes
+    return _broadcast_shapes_cached(*shapes)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/util.py", line 222, in wrapper
+    return cached(config._trace_context(), *args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/util.py", line 215, in cached
+    return f(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 147, in _broadcast_shapes_cached
+    return _broadcast_shapes_uncached(*shapes)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 163, in _broadcast_shapes_uncached
+    raise ValueError(f"Incompatible shapes for broadcasting: shapes={list(shapes)}")
+ValueError: Incompatible shapes for broadcasting: shapes=[(2,), (2, 102)]
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 78, in full_trainining
+    state, metrics = train_step(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 606, in cache_miss
+    out_flat = xla.xla_call(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1939, in bind
+    return call_bind(self, fun, *args, **params)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1955, in call_bind
+    outs = top_trace.process_call(primitive, fun_, tracers, params)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 701, in process_call
+    return primitive.impl(f, *tracers, **params)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/dispatch.py", line 234, in _xla_call_impl
+    compiled_fun = xla_callable(fun, device, backend, name, donated_invars,
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/linear_util.py", line 309, in memoized_fun
+    ans = call(fun, *args)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/dispatch.py", line 342, in _xla_callable_uncached
+    return lower_xla_callable(fun, device, backend, name, donated_invars, False,
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/profiler.py", line 313, in wrapper
+    return func(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/dispatch.py", line 428, in lower_xla_callable
+    jaxpr, out_type, consts = pe.trace_to_jaxpr_final2(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/profiler.py", line 313, in wrapper
+    return func(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2080, in trace_to_jaxpr_final2
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(fun, main, debug_info)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2030, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/linear_util.py", line 168, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 99, in train_step
+    metrics = compute_metrics(logits, batch['label'], num_classes)
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 44, in compute_metrics
+    'f1': jnp.array([f1(labels, logits, l) for l in range(num_classes)]).mean()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 44, in <listcomp>
+    'f1': jnp.array([f1(labels, logits, l) for l in range(num_classes)]).mean()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 31, in f1
+    tp = jnp.sum((y_true == label) & (y_predicted == label))
+(2, 224, 224, 3)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 607, in __and__
+    def __and__(self, other): return self.aval._and(self, other)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4710, in deferring_binary_op
+    return binary_op(*args)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 606, in cache_miss
+    out_flat = xla.xla_call(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1939, in bind
+    return call_bind(self, fun, *args, **params)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1955, in call_bind
+    outs = top_trace.process_call(primitive, fun_, tracers, params)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 1742, in process_call
+    jaxpr, out_type, consts = trace_to_subjaxpr_dynamic2(f, self.main, debug_info=dbg)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/interpreters/partial_eval.py", line 2030, in trace_to_subjaxpr_dynamic2
+    ans = fun.call_wrapped(*in_tracers_)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/linear_util.py", line 168, in call_wrapped
+    ans = self.f(*args, **dict(self.params, **kwargs))
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/ufuncs.py", line 72, in <lambda>
+    fn = lambda x1, x2: lax_fn(*_promote_args(numpy_fn.__name__, x1, x2))
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/util.py", line 356, in _promote_args
+    return _promote_shapes(fun_name, *_promote_dtypes(*args))
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/util.py", line 249, in _promote_shapes
+    result_rank = len(lax.broadcast_shapes(*shapes))
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 143, in broadcast_shapes
+    return _broadcast_shapes_uncached(*shapes)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/lax/lax.py", line 163, in _broadcast_shapes_uncached
+    raise ValueError(f"Incompatible shapes for broadcasting: shapes={list(shapes)}")
+jax._src.traceback_util.UnfilteredStackTrace: ValueError: Incompatible shapes for broadcasting: shapes=[(2,), (2, 102)]
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 78, in full_trainining
+    state, metrics = train_step(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 99, in train_step
+    metrics = compute_metrics(logits, batch['label'], num_classes)
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 44, in compute_metrics
+    'f1': jnp.array([f1(labels, logits, l) for l in range(num_classes)]).mean()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 44, in <listcomp>
+    'f1': jnp.array([f1(labels, logits, l) for l in range(num_classes)]).mean()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_utils.py", line 31, in f1
+    tp = jnp.sum((y_true == label) & (y_predicted == label))
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/lax_numpy.py", line 4710, in deferring_binary_op
+    return binary_op(*args)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/ufuncs.py", line 72, in <lambda>
+    fn = lambda x1, x2: lax_fn(*_promote_args(numpy_fn.__name__, x1, x2))
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/util.py", line 356, in _promote_args
+    return _promote_shapes(fun_name, *_promote_dtypes(*args))
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/numpy/util.py", line 249, in _promote_shapes
+    result_rank = len(lax.broadcast_shapes(*shapes))
+ValueError: Incompatible shapes for broadcasting: shapes=[(2,), (2, 102)]

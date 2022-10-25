@@ -1,0 +1,145 @@
+2022-10-25 16:53:26,904 INFO    StreamThr :155983 [internal.py:wandb_internal():88] W&B internal server running at pid: 155983, started at: 2022-10-25 16:53:26.903585
+2022-10-25 16:53:26,906 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: status
+2022-10-25 16:53:26,906 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: status
+2022-10-25 16:53:26,907 DEBUG   SenderThread:155983 [sender.py:send():303] send: header
+2022-10-25 16:53:26,908 INFO    WriterThread:155983 [datastore.py:open_for_write():75] open: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/run-2uk51pui.wandb
+2022-10-25 16:53:26,973 DEBUG   SenderThread:155983 [sender.py:send():303] send: run
+2022-10-25 16:53:27,519 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: check_version
+2022-10-25 16:53:27,520 INFO    SenderThread:155983 [dir_watcher.py:__init__():216] watching files in: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files
+2022-10-25 16:53:27,520 INFO    SenderThread:155983 [sender.py:_start_run_threads():928] run started: 2uk51pui with start time 1666706006.901234
+2022-10-25 16:53:27,520 DEBUG   SenderThread:155983 [sender.py:send():303] send: summary
+2022-10-25 16:53:27,520 INFO    SenderThread:155983 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-10-25 16:53:27,521 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: check_version
+2022-10-25 16:53:27,643 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: run_start
+2022-10-25 16:53:27,646 DEBUG   HandlerThread:155983 [meta.py:__init__():34] meta init
+2022-10-25 16:53:27,646 DEBUG   HandlerThread:155983 [meta.py:__init__():49] meta init done
+2022-10-25 16:53:27,646 DEBUG   HandlerThread:155983 [meta.py:probe():215] probe
+2022-10-25 16:53:27,656 DEBUG   HandlerThread:155983 [meta.py:_setup_git():205] setup git
+2022-10-25 16:53:27,668 DEBUG   HandlerThread:155983 [meta.py:_setup_git():212] setup git done
+2022-10-25 16:53:27,668 DEBUG   HandlerThread:155983 [meta.py:_save_pip():53] save pip
+2022-10-25 16:53:27,669 DEBUG   HandlerThread:155983 [meta.py:_save_pip():67] save pip done
+2022-10-25 16:53:27,669 DEBUG   HandlerThread:155983 [meta.py:probe():253] probe done
+2022-10-25 16:53:27,709 DEBUG   SenderThread:155983 [sender.py:send():303] send: files
+2022-10-25 16:53:27,709 INFO    SenderThread:155983 [sender.py:_save_file():1171] saving file wandb-metadata.json with policy now
+2022-10-25 16:53:27,715 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-25 16:53:27,715 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: stop_status
+2022-10-25 16:53:27,912 DEBUG   SenderThread:155983 [sender.py:send():303] send: telemetry
+2022-10-25 16:53:28,279 INFO    Thread-17 :155983 [upload_job.py:push():143] Uploaded file /tmp/tmp5v8ouqtdwandb/7e7phdj0-wandb-metadata.json
+2022-10-25 16:53:28,522 INFO    Thread-13 :155983 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/wandb-metadata.json
+2022-10-25 16:53:28,522 INFO    Thread-13 :155983 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/wandb-summary.json
+2022-10-25 16:53:28,522 INFO    Thread-13 :155983 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/requirements.txt
+2022-10-25 16:53:28,522 INFO    Thread-13 :155983 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/output.log
+2022-10-25 16:53:28,550 DEBUG   SenderThread:155983 [sender.py:send():303] send: exit
+2022-10-25 16:53:28,550 INFO    SenderThread:155983 [sender.py:send_exit():442] handling exit code: 1
+2022-10-25 16:53:28,551 INFO    SenderThread:155983 [sender.py:send_exit():444] handling runtime: 0
+2022-10-25 16:53:28,551 INFO    SenderThread:155983 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-10-25 16:53:28,551 INFO    SenderThread:155983 [sender.py:send_exit():450] send defer
+2022-10-25 16:53:28,551 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:28,551 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 0
+2022-10-25 16:53:28,551 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:28,551 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 0
+2022-10-25 16:53:28,551 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 1
+2022-10-25 16:53:28,552 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:28,552 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 1
+2022-10-25 16:53:28,631 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:28,631 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 1
+2022-10-25 16:53:28,631 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 2
+2022-10-25 16:53:28,631 DEBUG   SenderThread:155983 [sender.py:send():303] send: stats
+2022-10-25 16:53:28,631 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:28,631 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 2
+2022-10-25 16:53:28,631 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:28,632 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 2
+2022-10-25 16:53:28,632 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 3
+2022-10-25 16:53:28,632 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:28,632 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 3
+2022-10-25 16:53:28,632 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:28,632 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 3
+2022-10-25 16:53:28,632 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 4
+2022-10-25 16:53:28,632 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:28,632 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 4
+2022-10-25 16:53:28,632 DEBUG   SenderThread:155983 [sender.py:send():303] send: summary
+2022-10-25 16:53:28,633 INFO    SenderThread:155983 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-10-25 16:53:28,633 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:28,633 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 4
+2022-10-25 16:53:28,633 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 5
+2022-10-25 16:53:28,633 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:28,633 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 5
+2022-10-25 16:53:28,633 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:28,633 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 5
+2022-10-25 16:53:28,863 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 6
+2022-10-25 16:53:28,863 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:28,863 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 6
+2022-10-25 16:53:28,863 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:28,863 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 6
+2022-10-25 16:53:29,521 INFO    Thread-13 :155983 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/config.yaml
+2022-10-25 16:53:29,521 INFO    Thread-13 :155983 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/wandb-summary.json
+2022-10-25 16:53:29,544 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: poll_exit
+2022-10-25 16:53:30,453 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 7
+2022-10-25 16:53:30,453 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: poll_exit
+2022-10-25 16:53:30,454 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:30,454 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 7
+2022-10-25 16:53:30,454 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:30,454 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 7
+2022-10-25 16:53:30,454 INFO    SenderThread:155983 [dir_watcher.py:finish():362] shutting down directory watcher
+2022-10-25 16:53:30,521 INFO    Thread-13 :155983 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/output.log
+2022-10-25 16:53:30,521 INFO    SenderThread:155983 [dir_watcher.py:finish():392] scan: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files
+2022-10-25 16:53:30,521 INFO    SenderThread:155983 [dir_watcher.py:finish():406] scan save: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/requirements.txt requirements.txt
+2022-10-25 16:53:30,521 INFO    SenderThread:155983 [dir_watcher.py:finish():406] scan save: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/wandb-summary.json wandb-summary.json
+2022-10-25 16:53:30,521 INFO    SenderThread:155983 [dir_watcher.py:finish():406] scan save: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/wandb-metadata.json wandb-metadata.json
+2022-10-25 16:53:30,521 INFO    SenderThread:155983 [dir_watcher.py:finish():406] scan save: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/config.yaml config.yaml
+2022-10-25 16:53:30,522 INFO    SenderThread:155983 [dir_watcher.py:finish():406] scan save: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/output.log output.log
+2022-10-25 16:53:30,522 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 8
+2022-10-25 16:53:30,522 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:30,524 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 8
+2022-10-25 16:53:30,526 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:30,529 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 8
+2022-10-25 16:53:30,529 INFO    SenderThread:155983 [file_pusher.py:finish():168] shutting down file pusher
+2022-10-25 16:53:30,544 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: poll_exit
+2022-10-25 16:53:30,545 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: poll_exit
+2022-10-25 16:53:31,090 INFO    Thread-19 :155983 [upload_job.py:push():143] Uploaded file /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/wandb-summary.json
+2022-10-25 16:53:31,092 INFO    Thread-20 :155983 [upload_job.py:push():143] Uploaded file /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/config.yaml
+2022-10-25 16:53:31,103 INFO    Thread-21 :155983 [upload_job.py:push():143] Uploaded file /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/output.log
+2022-10-25 16:53:31,129 INFO    Thread-18 :155983 [upload_job.py:push():143] Uploaded file /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/files/requirements.txt
+2022-10-25 16:53:31,329 INFO    Thread-12 :155983 [sender.py:transition_state():463] send defer: 9
+2022-10-25 16:53:31,330 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:31,330 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 9
+2022-10-25 16:53:31,330 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:31,330 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 9
+2022-10-25 16:53:31,330 INFO    SenderThread:155983 [file_pusher.py:join():173] waiting for file pusher
+2022-10-25 16:53:31,330 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 10
+2022-10-25 16:53:31,330 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:31,330 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 10
+2022-10-25 16:53:31,330 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:31,330 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 10
+2022-10-25 16:53:31,545 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: poll_exit
+2022-10-25 16:53:31,886 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 11
+2022-10-25 16:53:31,886 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: poll_exit
+2022-10-25 16:53:31,887 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:31,887 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 11
+2022-10-25 16:53:31,887 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:31,887 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 11
+2022-10-25 16:53:31,887 INFO    SenderThread:155983 [sender.py:transition_state():463] send defer: 12
+2022-10-25 16:53:31,888 DEBUG   SenderThread:155983 [sender.py:send():303] send: final
+2022-10-25 16:53:31,888 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: defer
+2022-10-25 16:53:31,888 DEBUG   SenderThread:155983 [sender.py:send():303] send: footer
+2022-10-25 16:53:31,888 INFO    HandlerThread:155983 [handler.py:handle_request_defer():161] handle defer: 12
+2022-10-25 16:53:31,888 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: defer
+2022-10-25 16:53:31,888 INFO    SenderThread:155983 [sender.py:send_request_defer():459] handle sender defer: 12
+2022-10-25 16:53:31,888 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: poll_exit
+2022-10-25 16:53:31,889 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: poll_exit
+2022-10-25 16:53:31,889 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: poll_exit
+2022-10-25 16:53:31,889 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: server_info
+2022-10-25 16:53:31,889 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: poll_exit
+2022-10-25 16:53:31,890 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: get_summary
+2022-10-25 16:53:31,890 DEBUG   SenderThread:155983 [sender.py:send_request():317] send_request: server_info
+2022-10-25 16:53:31,891 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: sampled_history
+2022-10-25 16:53:32,290 INFO    MainThread:155983 [wandb_run.py:_footer_history_summary_info():3377] rendering history
+2022-10-25 16:53:32,290 INFO    MainThread:155983 [wandb_run.py:_footer_history_summary_info():3409] rendering summary
+2022-10-25 16:53:32,290 INFO    MainThread:155983 [wandb_run.py:_footer_sync_info():3333] logging synced files
+2022-10-25 16:53:32,291 DEBUG   HandlerThread:155983 [handler.py:handle_request():138] handle_request: shutdown
+2022-10-25 16:53:32,291 INFO    HandlerThread:155983 [handler.py:finish():814] shutting down handler
+2022-10-25 16:53:32,888 INFO    WriterThread:155983 [datastore.py:close():279] close: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221025_165326-2uk51pui/run-2uk51pui.wandb
+2022-10-25 16:53:33,290 INFO    SenderThread:155983 [sender.py:finish():1331] shutting down sender
+2022-10-25 16:53:33,290 INFO    SenderThread:155983 [file_pusher.py:finish():168] shutting down file pusher
+2022-10-25 16:53:33,290 INFO    SenderThread:155983 [file_pusher.py:join():173] waiting for file pusher
+2022-10-25 16:53:33,293 INFO    MainThread:155983 [internal.py:handle_exit():78] Internal process exited

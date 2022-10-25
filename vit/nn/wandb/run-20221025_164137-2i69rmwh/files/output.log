@@ -1,0 +1,44 @@
+  0%|                                                                                                                                                                                                                                                       | 0/3 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1686, in _get_axis_size
+    return shape[axis]
+IndexError: tuple index out of range
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 77, in full_trainining
+    state, metrics = train_step(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 2222, in cache_miss
+    out_tree, out_flat = f_pmapped_(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 2090, in pmap_f
+    p = _prepare_pmap(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 2036, in _prepare_pmap
+    local_axis_size = _mapped_axis_size(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1694, in _mapped_axis_size
+    axis_sizes = core.dedup_referents(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1060, in dedup_referents
+    return list({HashableWrapper(get_referent(x)):x for x in itr}.values())
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1060, in <dictcomp>
+    return list({HashableWrapper(get_referent(x)):x for x in itr}.values())
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1695, in <genexpr>
+    _get_axis_size(name, np.shape(x), d) for x, d in zip(vals, dims)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1689, in _get_axis_size
+    raise ValueError(
+jax._src.traceback_util.UnfilteredStackTrace: ValueError: pmap was requested to map its argument along axis 0, which implies that its rank should be at least 1, but is only 0 (its shape is ())
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 77, in full_trainining
+    state, metrics = train_step(
+ValueError: pmap was requested to map its argument along axis 0, which implies that its rank should be at least 1, but is only 0 (its shape is ())

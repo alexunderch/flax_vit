@@ -1,36 +1,32 @@
 import jax.numpy as jnp
-import jax.random as random
-from jax import lax
 import functools
 import flax
 import optax
 import jax
 from flax.training.train_state import TrainState
-from utils import Config
-from sklearn.metrics import f1_score
-from tqdm import tqdm
 
-from typing import Dict, Callable, Tuple
+from typing import Dict, Callable, Tuple, List
 
 
-def cross_entropy_loss(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int):
+def cross_entropy_loss(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) -> jnp.ndarray:
     one_hot_labels = jax.nn.one_hot(labels, num_classes = num_classes)
     xentropy = optax.softmax_cross_entropy(logits = logits, 
                                         labels = one_hot_labels)
     return jnp.mean(xentropy)
 
-def accumulate_metrics(metrics):
+def accumulate_metrics(metrics: List[Dict]) -> Dict:
     metrics = jax.device_get(metrics)
     return {
         k: jnp.mean([metric[k] for metric in metrics])
         for k in metrics[0]
     }
 
-def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int):
+def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) -> Dict:
     loss = cross_entropy_loss(logits, labels, num_classes)
     accuracy = jnp.mean(jnp.argmax(logits, -1) == labels)
    
     def f1(y_true, y_predicted, label):
+        #NOTE: hmhmh
 
         tp = jnp.sum((y_true == label) & (y_predicted == label))
         fp = jnp.sum((y_true != label) & (y_predicted == label))
@@ -45,7 +41,7 @@ def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int):
     metrics = {
         'loss': loss.mean(),
         'accuracy': accuracy.mean(),
-        'f1': jnp.array([f1(labels, logits, l) for l in range(num_classes)]).mean()
+        'f1': jnp.array([f1(labels, jnp.argmax(logits, -1), l) for l in range(num_classes)]).mean()
     }
     #mean across all devices batches
     # metrics = lax.pmean(metrics, axis_name = 'batch')
@@ -55,7 +51,8 @@ def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int):
 def create_learning_rate_fn(
                             config: Dict,
                             base_learning_rate: float,
-                            steps_per_epoch: int) -> Callable:
+                            steps_per_epoch: int
+                            ) -> Callable:
     warmup_fn = optax.linear_schedule(
                                     init_value = 0., end_value = base_learning_rate,
                                     transition_steps = config["warmup_epochs"] * steps_per_epoch
@@ -85,6 +82,7 @@ def train_step(state: TrainState,
                                 batch['image'],
                                 rngs = dict(dropout= dropout_rng))                       
         loss = cross_entropy_loss(logits, batch['label'], num_classes)
+        
         weight_penalty_params = jax.tree_util.tree_leaves(params)
         weight_l2 = sum(jnp.sum(x ** 2) 
                         for x in weight_penalty_params 
@@ -114,3 +112,28 @@ def eval_step(state: TrainState,
                             rngs = dict(dropout = dropout_rng))
     return compute_metrics(logits, batch['label'], num_classes)
 
+
+def pmap_steps() -> Tuple:
+    return train_step, eval_step
+           
+def create_optimizer(clip_parameter: float, 
+                    learning_rate: float):
+    return optax.chain(
+                        optax.clip_by_global_norm(clip_parameter),
+                        optax.adam(learning_rate = learning_rate)
+                    )
+
+def init_train_state(
+                    model: flax.linen.Module, 
+                    random_key, 
+                    shape: tuple, 
+                    learning_rate: float,
+                    clip_parameter: float,
+                    ) -> TrainState:
+
+    variables = model.init(random_key, jnp.ones(shape))
+    return TrainState.create(   
+                                apply_fn = model.apply,
+                                tx = create_optimizer(clip_parameter, learning_rate),
+                                params = variables['params'],
+                            )

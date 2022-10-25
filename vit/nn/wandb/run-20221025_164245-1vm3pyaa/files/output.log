@@ -1,0 +1,130 @@
+  0%|                                                                                                                                                                                                                                                       | 0/3 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1686, in _get_axis_size
+    return shape[axis]
+IndexError: tuple index out of range
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 78, in full_trainining
+    state, metrics = train_step(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/traceback_util.py", line 162, in reraise_with_filtered_traceback
+    return fun(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 2222, in cache_miss
+    out_tree, out_flat = f_pmapped_(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 2090, in pmap_f
+    p = _prepare_pmap(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 2036, in _prepare_pmap
+    local_axis_size = _mapped_axis_size(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1694, in _mapped_axis_size
+    axis_sizes = core.dedup_referents(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1060, in dedup_referents
+    return list({HashableWrapper(get_referent(x)):x for x in itr}.values())
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/core.py", line 1060, in <dictcomp>
+    return list({HashableWrapper(get_referent(x)):x for x in itr}.values())
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1695, in <genexpr>
+    _get_axis_size(name, np.shape(x), d) for x, d in zip(vals, dims)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/jax/_src/api.py", line 1689, in _get_axis_size
+    raise ValueError(
+jax._src.traceback_util.UnfilteredStackTrace: ValueError: pmap was requested to map its argument along axis 0, which implies that its rank should be at least 1, but is only 0 (its shape is ())
+The stack trace below excludes JAX-internal frames.
+The preceding is the original exception that occurred, unmodified.
+--------------------
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 78, in full_trainining
+    state, metrics = train_step(
+ValueError: pmap was requested to map its argument along axis 0, which implies that its rank should be at least 1, but is only 0 (its shape is ())
+{'image': ShardedDeviceArray([[[[0.82101715, 0.79356617, 0.7621936 ],
+                      [0.81071347, 0.7832625 , 0.75188994],
+                      [0.8070553 , 0.7796043 , 0.74823177],
+                      ...,
+                      [0.80387056, 0.81955683, 0.81563526],
+                      [0.8142342 , 0.8299205 , 0.8259989 ],
+                      [0.82493865, 0.8406249 , 0.83670336]],
+                     [[0.806889  , 0.779438  , 0.7480655 ],
+                      [0.7977792 , 0.7703282 , 0.7389557 ],
+                      [0.7962755 , 0.7688245 , 0.737452  ],
+                      ...,
+                      [0.7882046 , 0.8038909 , 0.7999693 ],
+                      [0.79773045, 0.8134167 , 0.80949515],
+                      [0.80962884, 0.8253151 , 0.82139355]],
+                     [[0.79473037, 0.7672794 , 0.73590684],
+                      [0.7842262 , 0.7567752 , 0.72540265],
+                      [0.783701  , 0.75625   , 0.7248775 ],
+                      ...,
+                      [0.77372205, 0.7894083 , 0.78548676],
+                      [0.7842263 , 0.7999126 , 0.795991  ],
+                      [0.7947303 , 0.8104166 , 0.806495  ]],
+                     ...,
+                     [[0.9336999 , 0.95330775, 0.96507245],
+                      [0.93830985, 0.9579177 , 0.9696824 ],
+                      [0.9478318 , 0.96743965, 0.97920436],
+                      ...,
+                      [0.672724  , 0.672724  , 0.68056715],
+                      [0.6665968 , 0.6665968 , 0.6744399 ],
+                      [0.6917467 , 0.6917467 , 0.69958985]],
+                     [[0.9234157 , 0.94302356, 0.95478827],
+                      [0.9320579 , 0.95166576, 0.96343046],
+                      [0.9472339 , 0.96684176, 0.97860646],
+                      ...,
+                      [0.67546374, 0.67546374, 0.6833069 ],
+                      [0.66933656, 0.66933656, 0.6771797 ],
+                      [0.693847  , 0.693847  , 0.70169014]],
+                     [[0.9263599 , 0.94596773, 0.95773244],
+                      [0.93853277, 0.9581406 , 0.9699053 ],
+                      [0.9542891 , 0.9738969 , 0.9856616 ],
+                      ...,
+                      [0.68017316, 0.68017316, 0.6880163 ],
+                      [0.6740459 , 0.6740459 , 0.68188906],
+                      [0.6975751 , 0.6975751 , 0.7054182 ]]],
+                    [[[0.9111926 , 0.92687887, 0.9229573 ],
+                      [0.92163867, 0.93732494, 0.9334034 ],
+                      [0.9320834 , 0.9477697 , 0.94384813],
+                      ...,
+                      [0.9869397 , 0.99935913, 0.99870443],
+                      [0.9816876 , 0.9973739 , 0.9934523 ],
+                      [0.9731793 , 0.98886555, 0.984944  ]],
+                     [[0.9147753 , 0.9304616 , 0.92654   ],
+                      [0.9217418 , 0.93742806, 0.9335065 ],
+                      [0.92881656, 0.94450283, 0.94058126],
+                      ...,
+                      [0.94863445, 0.9643207 , 0.96039915],
+                      [0.94327915, 0.9589654 , 0.95504385],
+                      [0.93483835, 0.9505246 , 0.94660306]],
+                     [[0.9219782 , 0.93766445, 0.9337429 ],
+                      [0.9240865 , 0.9397728 , 0.9358512 ],
+                      [0.9285727 , 0.944259  , 0.9403374 ],
+                      ...,
+                      [0.94814426, 0.96383053, 0.95990896],
+                      [0.9411382 , 0.9568245 , 0.9529029 ],
+                      [0.9340686 , 0.9497549 , 0.9458333 ]],
+                     ...,
+                     [[0.93399864, 0.93399864, 0.93399864],
+                      [0.9392507 , 0.9392507 , 0.9392507 ],
+                      [0.94450283, 0.94450283, 0.94450283],
+                      ...,
+                      [0.9685211 , 0.95283484, 0.94107014],
+                      [0.9679271 , 0.9522408 , 0.9404761 ],
+                      [0.97118336, 0.9554971 , 0.9437324 ]],
+                     [[0.933369  , 0.933369  , 0.933369  ],
+                      [0.9355392 , 0.9355392 , 0.9355392 ],
+                      [0.94079137, 0.94079137, 0.94079137],
+                      ...,
+                      [0.96120447, 0.9455182 , 0.9337535 ],
+                      [0.9630272 , 0.9473409 , 0.9355762 ],
+                      [0.9743359 , 0.95864964, 0.94688493]],
+                     [[0.93333334, 0.93333334, 0.93333334],
+                      [0.93532914, 0.93532914, 0.93532914],
+                      [0.94058126, 0.94058126, 0.94058126],
+                      ...,
+                      [0.94596297, 0.9302767 , 0.918512  ],
+                      [0.9530471 , 0.9373608 , 0.9255961 ],
+                      [0.96996987, 0.9542836 , 0.9425189 ]]]],                   dtype=float32), 'label': ShardedDeviceArray([27, 92], dtype=int32)}

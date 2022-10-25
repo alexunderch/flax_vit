@@ -1,3 +1,4 @@
+from typing import Literal
 import flax.linen as nn
 import jax.numpy as jnp
 import jax.random as jr
@@ -58,6 +59,7 @@ class TransformerEmbeddings(nn.Module):
     image_size: int
     patch_size: int
     training: bool
+    type: Literal["learnable", "sinusoid"] = "learnable"
     dtype: jnp.dtype = jnp.float32  # the dtype of the computation
 
     def setup(self):
@@ -69,20 +71,28 @@ class TransformerEmbeddings(nn.Module):
                                                 patch_size= self.patch_size,
                                                 dtype = self.dtype)
         num_patches = self.patch_embeddings.num_patches
-        self.position_embeddings = self.param(
-            "position_embeddings", 
-            nn.initializers.zeros, 
-            (1, num_patches + 1, self.latent_dim)
-        )
+
+        pos_emb_shape = (1, num_patches + 1, self.latent_dim)
+        if self.type == "learnable":
+            self.position_embeddings = self.param(
+                "position_embeddings", 
+                nn.initializers.zeros, 
+                pos_emb_shape
+            )
+        elif self.type == "sinusoid":
+            self.position_embeddings = sinusoidal_init(max_len = num_patches + 1)(
+                None,
+                pos_emb_shape,
+            )
+            
         self.dropout = nn.Dropout(rate=self.dropout_rate, deterministic = self.training)
 
     def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
         batch_size = x.shape[0]
 
         embeddings = self.patch_embeddings(x)
-
         cls_tokens = jnp.broadcast_to(self.cls_token, (batch_size, 1, self.latent_dim))
-        embeddings = jax.lax.concatenate((cls_tokens, embeddings), dimension = 1) 
+        embeddings = jax.lax.concatenate([cls_tokens, embeddings], dimension = 1) 
         embeddings = embeddings + self.position_embeddings
         embeddings = self.dropout(embeddings)
         return embeddings
