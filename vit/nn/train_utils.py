@@ -50,9 +50,9 @@ def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) 
 
 def create_learning_rate_fn(
                             config: Dict,
-                            base_learning_rate: float,
                             steps_per_epoch: int
                             ) -> Callable:
+    base_learning_rate = config["learning_rate"]
     warmup_fn = optax.linear_schedule(
                                     init_value = 0., end_value = base_learning_rate,
                                     transition_steps = config["warmup_epochs"] * steps_per_epoch
@@ -107,7 +107,7 @@ def make_update_fn(learning_rate_fn: Callable,
     
     return jax.pmap(jax.jit(train_step), axis_name = "batch")
 
-def make_update_fn(num_classes: int,
+def make_infer_fn(num_classes: int,
                    config: Dict,
                    ) -> Callable:
 
@@ -122,26 +122,25 @@ def make_update_fn(num_classes: int,
     
     return jax.pmap(jax.jit(eval_step), axis_name = "batch")
     
-def optimizer(clip_parameter: float, 
-             learning_rate: float,
-             config: Dict):
+def optimizer(config: Dict, steps_per_epoch: int):
+    scheduler = create_learning_rate_fn(config, steps_per_epoch)
     return optax.chain(
-                        optax.clip_by_global_norm(clip_parameter),
-                        optax.adam(learning_rate = learning_rate),
-                        optax.join_schedules(create_learning_rate_fn(...), [config["warmip_steps"]])
+                        optax.clip_by_global_norm(config["clip_parameter"]),
+                        optax.adam(learning_rate = config["learning_rate"]),
+                        optax.scale_by_schedule(scheduler)
                     )
 
 def init_train_state(
                     model: flax.linen.Module, 
                     random_key, 
                     shape: tuple, 
-                    learning_rate: float,
-                    clip_parameter: float,
+                    config: Dict,
+                    steps_per_epoch: int
                     ) -> TrainState:
 
     variables = model.init(random_key, jnp.ones(shape))
     return TrainState.create(   
                                 apply_fn = model.apply,
-                                tx = optimizer(clip_parameter, learning_rate),
+                                tx = optimizer(config, steps_per_epoch),
                                 params = variables['params'],
                             )

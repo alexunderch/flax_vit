@@ -37,7 +37,7 @@ def prepare_data(dataset_name: str,
     )
 
     train_dataset = train_dataset.shuffle(
-                                            2
+                                            len(train_dataset)
                                         #   tf.data.experimental.cardinality(train_dataset).numpy(),
                                          )
 

@@ -2,6 +2,7 @@ import sys
 sys.path.append("..")
 from typing import Dict, List, Optional, Tuple
 from train_utils import (make_update_fn, 
+                         make_infer_fn,
                         accumulate_metrics, 
                         create_learning_rate_fn, 
                         init_train_state
@@ -49,8 +50,8 @@ def full_trainining(
                                 model = VisualTransformer(**config["model_config"]), 
                                 random_key = rng, 
                                 shape = batch[0].shape,
-                                learning_rate = config["learning_rate"],
-                                clip_parameter = config["clip_parameter"],
+                                config = config,
+                                steps_per_epoch = len(train_dataset)
                                 )
     del batch
     level, cli_logger = make_cli_logger()
@@ -59,8 +60,16 @@ def full_trainining(
                           **logger_kwargs
                           )
     #TODO: replicas, pmap
-    eval_step = None
-    train_step = make_update_fn(None, 102, config)
+    eval_step = make_infer_fn(
+                                num_classes = num_classes,
+                                config =config  
+                             )
+    train_step = make_update_fn(
+                                create_learning_rate_fn(config, len(train_dataset)), 
+                                num_classes = num_classes, 
+                                config = config
+                               )
+    
     _, dropout_rng =  jax.random.split(rng)
 
     state = flax.jax_utils.replicate(state)
@@ -82,16 +91,9 @@ def full_trainining(
             batch = flax.jax_utils.replicate(batch)
             
             state, metrics = train_step(
-                                        # num_classes = num_classes, 
-                                        # config = config,
                                         state = state,
                                         batch = batch,
-                                        rng = flax.jax_utils.replicate(dropout_rng),
-                                        # learning_rate_fn = create_learning_rate_fn(config, 
-                                        #                                            base_learning_rate = config["learning_rate"],
-                                        #                                            steps_per_epoch = len(train_dataset)),
-                                       
-                                       
+                                        rng = flax.jax_utils.replicate(dropout_rng),        
                                         )
             batch_metrics["train"].append(metrics)
 
@@ -110,7 +112,6 @@ def full_trainining(
             metrics = eval_step( 
                                 state = state, 
                                 batch = batch, 
-                                num_classes = num_classes, 
                                 rng = dropout_rng
                                 )
             batch_metrics["eval"].append(metrics)
