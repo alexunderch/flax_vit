@@ -1,0 +1,12 @@
+
+  0%|                                                                                                                                                                                                                                                       | 0/3 [00:24<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 93, in full_trainining
+    state, metrics = train_step(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/flax/core/frozen_dict.py", line 159, in tree_unflatten
+    @classmethod
+KeyboardInterrupt

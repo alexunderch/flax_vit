@@ -59,7 +59,6 @@ def full_trainining(
                           training_config = config,
                           **logger_kwargs
                           )
-    #TODO: replicas, pmap
     eval_step = make_infer_fn(
                                 num_classes = num_classes,
                                 config =config  
@@ -97,6 +96,7 @@ def full_trainining(
                                         )
             batch_metrics["train"].append(metrics)
 
+        print(batch_metrics["train"])
         batch_metrics["train"] = accumulate_metrics(batch_metrics["train"])
 
         cli_logger.log(level, "train logs:\n" + "\n".join([f"{k}:{v}" for k, v in batch_metrics["train"].items()]))

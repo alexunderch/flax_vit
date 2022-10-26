@@ -37,14 +37,13 @@ def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) 
 
         return 2 * (precision * recall) / (precision + recall)
         
-
     metrics = {
-        'loss': loss.mean(),
-        'accuracy': accuracy.mean(),
-        'f1': jnp.array([f1(labels, jnp.argmax(logits, -1), l) for l in range(num_classes)]).mean()
+        'loss': loss,
+        'accuracy': accuracy,
+        # 'f1': jnp.array([f1(labels, jnp.argmax(logits, -1), l) for l in range(num_classes)])
     }
     #mean across all devices batches
-    # metrics = lax.pmean(metrics, axis_name = 'batch')
+    metrics = jax.lax.pmean(metrics, axis_name = 'batch')
     return metrics
 
 
