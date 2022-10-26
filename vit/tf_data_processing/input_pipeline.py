@@ -50,18 +50,18 @@ def prepare_data(dataset_name: str,
                                                 ).numpy()
     eval_dataset = full_test_dataset.take(
                                         num_data * (validation_split)
-                                        ).cache().repeat()  
+                                        )
 
     test_dataset = full_test_dataset.take(
                                         num_data * (1. - validation_split)
-                                        ).cache().repeat()           
+                                        ) 
 
 
     eval_dataset = eval_dataset.shuffle(
                                         num_data * (validation_split), 
                                        )
 
-    train_dataset = train_dataset.cache().batch(batch_size)
+    train_dataset = train_dataset.batch(batch_size)
     eval_dataset = eval_dataset.batch(batch_size)
     test_dataset = test_dataset.batch(batch_size)
 

@@ -1,9 +1,0 @@
-  0%|                                                                                                                                                                                                                                                       | 0/3 [00:00<?, ?it/s]
-Traceback (most recent call last):
-  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 132, in <module>
-    test_full_training()
-  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 123, in test_full_training
-    full_trainining(
-  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 77, in full_trainining
-    print(batch[0].shape)
-KeyError: 0

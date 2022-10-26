@@ -7,18 +7,18 @@ from flax.training.train_state import TrainState
 
 from typing import Dict, Callable, Tuple, List
 
-
+@functools.partial(jax.jit, static_argnums=2)
 def cross_entropy_loss(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) -> jnp.ndarray:
     one_hot_labels = jax.nn.one_hot(labels, num_classes = num_classes)
     xentropy = optax.softmax_cross_entropy(logits = logits, 
-                                        labels = one_hot_labels)
+                                           labels = one_hot_labels)
     return jnp.mean(xentropy)
 
 def accumulate_metrics(metrics: List[Dict]) -> Dict:
     metrics = jax.device_get(metrics)
     return {
-        k: jnp.mean([metric[k] for metric in metrics])
-        for k in metrics[0]
+        k: jnp.array([metric[k] for metric in metrics]).mean()
+        for k in metrics[0].keys()
     }
 
 def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) -> Dict:
@@ -45,7 +45,6 @@ def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) 
     #mean across all devices batches
     metrics = jax.lax.pmean(metrics, axis_name = 'batch')
     return metrics
-
 
 def create_learning_rate_fn(
                             config: Dict,
@@ -83,6 +82,7 @@ def make_update_fn(learning_rate_fn: Callable,
         def loss_fn(params):
             logits = state.apply_fn(dict(params = params), 
                                     batch['image'],
+                                    mask = None,
                                     rngs = dict(dropout = rng))                       
             loss = cross_entropy_loss(logits, batch['label'], num_classes)
             
@@ -100,7 +100,7 @@ def make_update_fn(learning_rate_fn: Callable,
         new_state = state.apply_gradients(grads = grads)
 
         metrics = compute_metrics(logits, batch['label'], num_classes)
-        metrics['learning_rate'] = learning_rate_fn(state.step)
+        metrics['learning_rate'] = jax.lax.pmean(learning_rate_fn(state.step), axis_name = 'batch') 
 
         return new_state, metrics
     
@@ -116,6 +116,7 @@ def make_infer_fn(num_classes: int,
                 ) -> Dict:
         logits = state.apply_fn(dict(params = state.params), 
                                 batch['image'], 
+                                mask = None,
                                 rngs = dict(dropout = rng))
         return compute_metrics(logits, batch['label'], num_classes)
     
@@ -136,8 +137,10 @@ def init_train_state(
                     config: Dict,
                     steps_per_epoch: int
                     ) -> TrainState:
-
-    variables = model.init(random_key, jnp.ones(shape))
+    _, dropout_rng = jax.random.split(random_key)
+    random_keys = dict(params = random_key, 
+                       dropout = dropout_rng)
+    variables = model.init(random_keys, jnp.ones(shape))
     return TrainState.create(   
                                 apply_fn = model.apply,
                                 tx = optimizer(config, steps_per_epoch),

@@ -41,6 +41,10 @@ class WandbLogger():
 
         wandb.log(metrics, step = step)
     
+    def hyperparameter_sweep(self, sweep_config: Dict):
+        wandb.sweep(sweep_config, project = self.project_name)
+
+    
     def log_imagedata(self, images: jnp.ndarray,
                             metadata: Dict
                      ) -> None:

@@ -27,7 +27,6 @@ def test_step():
                                     "latent_dim": 512 ,
                                     "latent_ffd_dim": 1203,
                                     "n_heads": 8 ,
-                                    "training": True ,
                                     "dropout_rate_ffd": .1 ,
                                     "dropout_rate_att": .5
                                 },
@@ -87,7 +86,6 @@ def test_full_training():
                             "latent_dim": 512 ,
                             "latent_ffd_dim": 1203,
                             "n_heads": 8 ,
-                            "training": True ,
                             "dropout_rate_ffd": .1 ,
                             "dropout_rate_att": .5
                         },

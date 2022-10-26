@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Callable, Literal, Any, Tuple
 import flax.linen as nn
 import jax.numpy as jnp
 import jax.random as jr
@@ -22,17 +22,17 @@ class PatchEmbeddings(nn.Module):
             dtype = self.dtype,
         )
 
-    def __call__(self, x):
+    def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
         x = self.projection(x)
         batch_size, _, _, channels = x.shape
         return jnp.reshape(x, (batch_size, -1, channels))
 
 
-def sinusoidal_init(max_len=2048,
-                    min_scale=1.0,
-                    max_scale=10000.0):
+def sinusoidal_init(max_len: int = 2048,
+                    min_scale: float = 1.0,
+                    max_scale: float = 1e+4)-> Callable:
 
-  def init(key, shape, dtype = np.float32):
+  def init(key: Any, shape: Tuple, dtype: Any = np.float32) -> jnp.ndarray:
     d_feature = shape[-1]
     pe = np.zeros((max_len, d_feature), dtype=dtype)
     position = np.arange(0, max_len)[:, np.newaxis]
@@ -44,12 +44,6 @@ def sinusoidal_init(max_len=2048,
     return jnp.array(pe)
 
   return init
-
-"""
-      pos_embedding = sinusoidal_init(max_len=config.max_len)(None,
-                                                              pos_emb_shape,
-                                                              None)
-"""
 
 class TransformerEmbeddings(nn.Module):
     """Construct the CLS token, position and patch embeddings."""

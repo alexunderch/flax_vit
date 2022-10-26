@@ -23,11 +23,12 @@ class TransformerHead(nn.Module):
 
     @nn.compact
     def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
-        out = nn.Dropout(rate = self.dropout_rate, deterministic = self.training)(x)
+        out = nn.Dropout(rate = self.dropout_rate, deterministic = not self.training)(x)
         out = nn.Dense(self.output_dim, use_bias = self.use_bias)(out)
         return out
 
 class VisualTransformer(nn.Module):
+    training: bool 
     n_blocks: int
     block_config: Dict
     output_dim: int
@@ -42,16 +43,17 @@ class VisualTransformer(nn.Module):
             latent_dim = self.block_config["latent_dim"],
             image_size = self.img_params[0],
             patch_size = self.img_params[1],
-            training = self.block_config["training"]
+            training = self.training
         )
         
         self.encoder_layers = [
-            TransformerEncoderBlock(**self.block_config.pop("latent_dim")[0]) \
+            TransformerEncoderBlock(**self.block_config.pop("latent_dim")[0], 
+                                    training = self.training) \
             for _ in range(self.n_blocks)
         ]
 
-        self.head = TransformerHead(output_dim = self.output_dim,
-                                    training = self.block_config["training"])
+        self.head = TransformerHead(training = self.training, output_dim = self.output_dim)
+                                   
 
     def __call__(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
 

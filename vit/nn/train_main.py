@@ -14,7 +14,6 @@ from tf_data_processing.input_pipeline import (prepare_data,
 from common_utils import (convert_hidden_state_to_image, 
                           save_checkpoint_wandb, 
                           restore_checkpoint_wandb,
-                          checkpoint_exists
                           )
 from vit.models import VisualTransformer
 import jax, flax
@@ -42,18 +41,23 @@ def full_trainining(
                                                                       **dataset_kwargs,
                                                                      )
     num_classes = len(get_classes(ds_info))
-    batch = next(iter(tfds.as_numpy(train_dataset)))
     config["model_config"].update({"output_dim": num_classes})
 
     if state is None:
         state = init_train_state(
-                                model = VisualTransformer(**config["model_config"]), 
+                                model = VisualTransformer(training = True, **config["model_config"]), 
                                 random_key = rng, 
-                                shape = batch[0].shape,
+                                shape = next(iter(tfds.as_numpy(train_dataset)))[0].shape,
                                 config = config,
                                 steps_per_epoch = len(train_dataset)
                                 )
-    del batch
+
+    eval_state = init_train_state(model = VisualTransformer(training = False, **config["model_config"]), 
+                                random_key = rng, 
+                                shape = next(iter(tfds.as_numpy(eval_dataset)))[0].shape,
+                                config = config,
+                                steps_per_epoch = 1
+                                ) 
     level, cli_logger = make_cli_logger()
     wandb_logger = logger(
                           training_config = config,
@@ -72,80 +76,93 @@ def full_trainining(
     _, dropout_rng =  jax.random.split(rng)
 
     state = flax.jax_utils.replicate(state)
-
+    batch_metrics = dict(
+                    train = [],
+                    eval = [],
+                    test = []
+                    )
     for epoch in tqdm(range(1, config["num_epochs"] + 1)):
         best_epoch_eval_loss = jnp.inf
-        batch_metrics = dict(
-                            train = [],
-                            eval = [],
-                            test = []
-                            )
+        # #### training phase ####
+        cli_logger.log(level, f"training epoch {epoch}")
 
-        #### training phase ####
         for batch in iter(tfds.as_numpy(train_dataset)):
             batch = dict(
                         image = batch[0],
                         label = batch[1]
                         )
-            batch = flax.jax_utils.replicate(batch)
-            
             state, metrics = train_step(
                                         state = state,
-                                        batch = batch,
+                                        batch = flax.jax_utils.replicate(batch),
                                         rng = flax.jax_utils.replicate(dropout_rng),        
                                         )
             batch_metrics["train"].append(metrics)
 
-        print(batch_metrics["train"])
         batch_metrics["train"] = accumulate_metrics(batch_metrics["train"])
 
-        cli_logger.log(level, "train logs:\n" + "\n".join([f"{k}:{v}" for k, v in batch_metrics["train"].items()]))
+        cli_logger.log(20, "train logs:\n" + "\n".join([f"{k}: {v}" for k, v in batch_metrics["train"].items()]))
         wandb_logger.log_metrics(batch_metrics["train"], step = epoch, prefix = "train")
 
         
         #### evaluation phase ####
+
+        cli_logger.log(level, f"evaluating epoch {epoch}")
         for batch in iter(tfds.as_numpy(eval_dataset)):
             batch = dict(
                         image = batch[0],
                         label = batch[1]
                         )
+
+                   
             metrics = eval_step( 
-                                state = state, 
-                                batch = batch, 
-                                rng = dropout_rng
+                                state = flax.jax_utils.replicate(eval_state), 
+                                batch = flax.jax_utils.replicate(batch),
+                                rng = flax.jax_utils.replicate(dropout_rng),  
                                 )
             batch_metrics["eval"].append(metrics)
 
         batch_metrics["eval"] = accumulate_metrics(batch_metrics["eval"])
-        cli_logger.log(level, "eval logs:\n" + "\n".join([f"{k}:{v}" for k, v in batch_metrics["eval"].items()]))
-        wandb_logger.log_metrics(batch_metrics["eval"], step = epoch, prefix = "eval")
-
+        cli_logger.log(20, "eval logs:\n" + "\n".join([f"{k}: {v}" for k, v in batch_metrics["eval"].items()]))
 
         if batch_metrics["eval"]["loss"] < best_epoch_eval_loss:
-            best_epoch_eval_loss = batch_metrics["eval"]["loss"]
-            # save_checkpoint_wandb()
+            cli_logger.log(level, f"saving checkpoint")
 
+            best_epoch_eval_loss = batch_metrics["eval"]["loss"]
+            save_checkpoint_wandb(ckpt_path = "ckpt_file.pth", 
+                                  state = eval_state, 
+                                  step = epoch)
+        
+        wandb_logger.log_metrics(batch_metrics["eval"], step = epoch, prefix = "eval")
+        batch_metrics["train"], batch_metrics["eval"] = [], []
+        
 
         #### testing phase ####
-        restored_best_state = state #restore_checkpoint_wandb()
+        cli_logger.log(level, f"testing")
+        restored_best_state = init_train_state(
+                                model = VisualTransformer(training = False, **config["model_config"]), 
+                                random_key = rng, 
+                                shape = next(iter(tfds.as_numpy(test_dataset)))[0].shape,
+                                config = config,
+                                steps_per_epoch = 1
+                                )
+        restored_best_state = restore_checkpoint_wandb("ckpt_file.pth", restored_best_state)
         for batch in iter(tfds.as_numpy(test_dataset)):
             batch = dict(
                         image = batch[0],
                         label = batch[1]
                         )
             metrics =  eval_step( 
-                                state = restored_best_state, 
-                                batch = batch, 
-                                num_classes = len(get_classes(...)), 
-                                rng = dropout_rng
+                                state = flax.jax_utils.replicate(restored_best_state), 
+                                batch = flax.jax_utils.replicate(batch),
+                                rng = flax.jax_utils.replicate(dropout_rng), 
                                 )
             batch_metrics["test"].append(metrics)
 
         batch_metrics["test"] = accumulate_metrics(batch_metrics["test"])
-        cli_logger.log(level, "test logs:\n" + "\n".join([f"{k}:{v}" for k, v in batch_metrics["test"].items()]))
+        cli_logger.log(20, "test logs:\n" + "\n".join([f"{k}: {v}" for k, v in batch_metrics["test"].items()]))
         logger.log_metrics(batch_metrics["test"], step = epoch, prefix = "test")
 
-    return state, restored_best_state
+    return state, eval_state, restored_best_state
 
         
                             

@@ -36,30 +36,34 @@ def restore_checkpoint(state: TrainState,
     )
 
 
+def checkpoint_exists(ckpt_file) -> bool:
+    return os.path.isfile(ckpt_file)
+
 ####wandb utils
 def save_checkpoint_wandb(ckpt_path, state: TrainState, step: int):
-    with open(ckpt_path, "wb") as outfile:
-        outfile.write(msgpack_serialize(to_state_dict(state)))
+    
     artifact = wandb.Artifact(
         f'{wandb.run.name}-checkpoint', type='dataset'
     )
+    with open(ckpt_path, "wb") as outfile:
+        outfile.write(msgpack_serialize(to_state_dict(state)))
     artifact.add_file(ckpt_path)
     wandb.log_artifact(artifact, aliases=["latest", f"step_{step}"])
 
 
 def restore_checkpoint_wandb(ckpt_file, state: TrainState):
+    assert checkpoint_exists(ckpt_file)
     artifact = wandb.use_artifact(
         f'{wandb.run.name}-checkpoint:latest'
     )
-    artifact_dir = artifact.download()
+    print(artifact.download())
+    artifact_dir = "." #artifact.download()
     ckpt_path = os.path.join(artifact_dir, ckpt_file)
     with open(ckpt_path, "rb") as data_file:
         byte_data = data_file.read()
     return from_bytes(state, byte_data)
 ####wandb utils
 
-def checkpoint_exists(ckpt_file) -> bool:
-    return os.path.isfile(ckpt_file)
 
 def convert_hidden_state_to_image(input_data: jnp.ndarray, idx: int) -> jnp.ndarray:
     

@@ -1,9 +1,0 @@
-  0%|                                                                                                                                                                                                                                                       | 0/3 [00:00<?, ?it/s]
-Traceback (most recent call last):
-  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 131, in <module>
-    test_full_training()
-  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 122, in test_full_training
-    full_trainining(
-  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 75, in full_trainining
-    state.model.block_config.at("training").set(True)
-AttributeError: 'TrainState' object has no attribute 'model'

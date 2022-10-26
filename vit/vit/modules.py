@@ -33,17 +33,17 @@ class PreNormLayer(nn.Module):
         return self.fn(self.norm(x), **kwargs)      
 
 class FeedForwardLayer(nn.Module):
+    training: bool
     latent_dim: int
     dropout_rate: float
     activation: nn.activation
-    training: bool
     use_bias: Optional[bool] = True
 
     @nn.compact
     def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
         feature_dim = x.shape[-1]
         out = nn.Dense(self.latent_dim, use_bias = self.use_bias)(x)
-        out = nn.Dropout(rate = self.dropout_rate, deterministic = self.training)(out)
+        out = nn.Dropout(rate = self.dropout_rate, deterministic = not self.training)(out)
         out = self.activation(out)
         out = nn.Dense(feature_dim, use_bias = self.use_bias)(out)
         return out
@@ -51,9 +51,9 @@ class FeedForwardLayer(nn.Module):
 
 
 class MultiHeadSelfAttentionLayer(nn.Module):
+    training: bool
     dropout_rate: float
     n_heads: int 
-    training: bool
     use_bias: Optional[bool] = False
     attention_function: Optional[Callable] = scaled_dot_product
 
@@ -70,7 +70,7 @@ class MultiHeadSelfAttentionLayer(nn.Module):
     @nn.compact
     def __call__(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
         batch_size, seq_length, hidden_dim = x.shape
-        o_dropout = nn.Dropout(self.dropout_rate, deterministic = self.training)
+        o_dropout = nn.Dropout(self.dropout_rate, deterministic = not self.training)
 
         q, k, v = self.prepare_qkv(x)
         values, _ = jax.vmap(self.attention_function)(q, k, v, mask = mask)
@@ -87,8 +87,8 @@ class MultiHeadSelfAttentionLayer(nn.Module):
         
 
 class TransformerEncoderBlock(nn.Module):
-    n_heads: int
     training: bool
+    n_heads: int
     latent_ffd_dim: int
     dropout_rate_ffd: float
     dropout_rate_att: float
@@ -98,9 +98,9 @@ class TransformerEncoderBlock(nn.Module):
     
     def setup(self) -> None:
         self_attn = MultiHeadSelfAttentionLayer(
-                            **dict(dropout_rate = self.dropout_rate_att,
+                            **dict(training = self.training,
+                                    dropout_rate = self.dropout_rate_att,
                                     n_heads = self.n_heads,
-                                    training = self.training,
                                     use_bias = self.use_bias_att,
                                     attention_function = self.attention_function)
                             )
@@ -111,10 +111,10 @@ class TransformerEncoderBlock(nn.Module):
         self.residual_norm_attention = ResidualWrapper(fn = norm_attention)
         
         ffd = FeedForwardLayer(
+                                training = self.training,     
                                 latent_dim= self.latent_ffd_dim,
                                 dropout_rate = self.dropout_rate_ffd,
                                 activation = nn.gelu,
-                                training = self.training,
                                 use_bias = self.use_bias_ffd
                             )
 
