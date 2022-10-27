@@ -19,6 +19,7 @@ import os
 os.environ["XLA_FLAGS"] = '--xla_force_host_platform_device_count=3'
 
 def test_step():
+    #TODO
     print(jax.devices("cpu"))
     rng = jax.random.PRNGKey(0)
     _, dropout_rng = jax.random.split(rng)

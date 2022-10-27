@@ -149,12 +149,12 @@ def full_trainining(
                             )
     try:
         restored_best_state = restore_checkpoint_wandb("ckpt_file.pth", restored_best_state)
-    except CommError:
+    except:
         restored_best_state = TrainState(step = eval_state.step,
-                                            apply_fn = eval_state.apply_fn,
-                                            params = eval_state.params,
-                                            tx = state.tx,
-                                            opt_state = state.opt_state)
+                                        apply_fn = eval_state.apply_fn,
+                                        params = eval_state.params,
+                                        tx = state.tx,
+                                        opt_state = state.opt_state)
     for batch in tqdm(iter(tfds.as_numpy(test_dataset)), total = len(test_dataset)):
         batch = dict(
                     image = batch[0],

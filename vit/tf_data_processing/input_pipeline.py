@@ -40,7 +40,7 @@ def prepare_data(dataset_name: str,
                                             len(train_dataset)
                                          )
 
-    full_test_dataset = full_test_dataset.cache()
+    full_test_dataset = full_test_dataset
     full_test_dataset = full_test_dataset.map(
                                                 normalize__and_resize_img, num_parallel_calls=tf.data.AUTOTUNE
                                              )
@@ -60,9 +60,9 @@ def prepare_data(dataset_name: str,
                                         num_data * (validation_split), 
                                        )
 
-    train_dataset = train_dataset.cache().batch(batch_size)
-    eval_dataset = eval_dataset.cache().repeat().batch(batch_size)
-    test_dataset = test_dataset.cache().repeat().batch(batch_size)
+    train_dataset = train_dataset.batch(batch_size)
+    eval_dataset = eval_dataset.cache().batch(batch_size)
+    test_dataset = test_dataset.cache().batch(batch_size)
 
     print(
         "Number of train data points:",
