@@ -16,7 +16,7 @@ from train_main import full_trainining
 
 
 import os
-os.environ["XLA_FLAGS"] = '--xla_force_host_platform_device_count=2'
+os.environ["XLA_FLAGS"] = '--xla_force_host_platform_device_count=3'
 
 def test_step():
     print(jax.devices("cpu"))
@@ -84,7 +84,7 @@ def test_full_training():
                         n_blocks = 3,
                         block_config = {
                             "latent_dim": 512 ,
-                            "latent_ffd_dim": 1203,
+                            "latent_ffd_dim": 768,
                             "n_heads": 8 ,
                             "dropout_rate_ffd": .1 ,
                             "dropout_rate_att": .5
@@ -102,7 +102,7 @@ def test_full_training():
                         warmup_epochs = 1,
                         num_epochs=  1,
                         clip_parameter = 1.,
-                        batch_size = 1
+                        batch_size = 10
                         )
                 )
 

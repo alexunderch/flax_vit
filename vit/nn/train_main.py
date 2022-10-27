@@ -87,14 +87,14 @@ def full_trainining(
         best_epoch_eval_loss = jnp.inf
         # #### training phase ####
         cli_logger.log(level, f"training epoch {epoch}")
-
-        for batch in iter(tfds.as_numpy(train_dataset)):
+        state = flax.jax_utils.replicate(state)
+        for batch in tqdm(iter(tfds.as_numpy(train_dataset)), total = len(train_dataset)):
             batch = dict(
                         image = batch[0],
                         label = batch[1]
                         )
             state, metrics = train_step(
-                                        state = flax.jax_utils.replicate(state),
+                                        state = state,
                                         batch = flax.jax_utils.replicate(batch),
                                         rng = flax.jax_utils.replicate(dropout_rng),        
                                         )
@@ -105,12 +105,12 @@ def full_trainining(
         cli_logger.log(20, "train logs:\n" + "\n".join([f"{k}: {v}" for k, v in batch_metrics["train"].items()]))
         wandb_logger.log_metrics(batch_metrics["train"], step = epoch, prefix = "train")
 
-        # state = flax.jax_utils.unreplicate(state)
+        state = flax.jax_utils.unreplicate(state)
         #### evaluation phase ####
         cli_logger.log(level, f"evaluating epoch {epoch}")
         eval_state = copy_train_state(apply_fn = eval_state.apply_fn,
                                       params = state.params)
-        for batch in iter(tfds.as_numpy(eval_dataset)):
+        for batch in tqdm(iter(tfds.as_numpy(eval_dataset)), total = len(eval_dataset)):
             batch = dict(
                         image = batch[0],
                         label = batch[1]
@@ -155,7 +155,7 @@ def full_trainining(
                                             params = eval_state.params,
                                             tx = state.tx,
                                             opt_state = state.opt_state)
-    for batch in iter(tfds.as_numpy(test_dataset)):
+    for batch in tqdm(iter(tfds.as_numpy(test_dataset)), total = len(test_dataset)):
         batch = dict(
                     image = batch[0],
                     label = batch[1]

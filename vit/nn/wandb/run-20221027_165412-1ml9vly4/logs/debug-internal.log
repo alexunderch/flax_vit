@@ -1,0 +1,46 @@
+2022-10-27 16:54:12,117 INFO    StreamThr :280486 [internal.py:wandb_internal():88] W&B internal server running at pid: 280486, started at: 2022-10-27 16:54:12.116750
+2022-10-27 16:54:12,118 DEBUG   HandlerThread:280486 [handler.py:handle_request():138] handle_request: status
+2022-10-27 16:54:12,119 DEBUG   SenderThread:280486 [sender.py:send_request():317] send_request: status
+2022-10-27 16:54:12,120 DEBUG   SenderThread:280486 [sender.py:send():303] send: header
+2022-10-27 16:54:12,120 INFO    WriterThread:280486 [datastore.py:open_for_write():75] open: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/run-1ml9vly4.wandb
+2022-10-27 16:54:12,210 DEBUG   SenderThread:280486 [sender.py:send():303] send: run
+2022-10-27 16:54:12,663 DEBUG   HandlerThread:280486 [handler.py:handle_request():138] handle_request: check_version
+2022-10-27 16:54:12,664 INFO    SenderThread:280486 [dir_watcher.py:__init__():216] watching files in: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files
+2022-10-27 16:54:12,664 INFO    SenderThread:280486 [sender.py:_start_run_threads():928] run started: 1ml9vly4 with start time 1666878852.113815
+2022-10-27 16:54:12,664 DEBUG   SenderThread:280486 [sender.py:send():303] send: summary
+2022-10-27 16:54:12,664 INFO    SenderThread:280486 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2022-10-27 16:54:12,664 DEBUG   SenderThread:280486 [sender.py:send_request():317] send_request: check_version
+2022-10-27 16:54:12,768 DEBUG   HandlerThread:280486 [handler.py:handle_request():138] handle_request: run_start
+2022-10-27 16:54:12,770 DEBUG   HandlerThread:280486 [meta.py:__init__():34] meta init
+2022-10-27 16:54:12,770 DEBUG   HandlerThread:280486 [meta.py:__init__():49] meta init done
+2022-10-27 16:54:12,770 DEBUG   HandlerThread:280486 [meta.py:probe():215] probe
+2022-10-27 16:54:12,780 DEBUG   HandlerThread:280486 [meta.py:_setup_git():205] setup git
+2022-10-27 16:54:12,790 DEBUG   HandlerThread:280486 [meta.py:_setup_git():212] setup git done
+2022-10-27 16:54:12,790 DEBUG   HandlerThread:280486 [meta.py:_save_pip():53] save pip
+2022-10-27 16:54:12,790 DEBUG   HandlerThread:280486 [meta.py:_save_pip():67] save pip done
+2022-10-27 16:54:12,790 DEBUG   HandlerThread:280486 [meta.py:probe():253] probe done
+2022-10-27 16:54:12,821 DEBUG   SenderThread:280486 [sender.py:send():303] send: files
+2022-10-27 16:54:12,821 INFO    SenderThread:280486 [sender.py:_save_file():1171] saving file wandb-metadata.json with policy now
+2022-10-27 16:54:12,825 DEBUG   HandlerThread:280486 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-27 16:54:12,826 DEBUG   SenderThread:280486 [sender.py:send_request():317] send_request: stop_status
+2022-10-27 16:54:13,032 DEBUG   SenderThread:280486 [sender.py:send():303] send: telemetry
+2022-10-27 16:54:13,390 INFO    Thread-17 :280486 [upload_job.py:push():143] Uploaded file /tmp/tmpfxf02ibawandb/3f0rfwqo-wandb-metadata.json
+2022-10-27 16:54:13,665 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/wandb-summary.json
+2022-10-27 16:54:13,665 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:13,665 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/requirements.txt
+2022-10-27 16:54:13,665 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_created():275] file/dir created: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/wandb-metadata.json
+2022-10-27 16:54:15,665 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:25,667 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:27,668 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:28,035 DEBUG   HandlerThread:280486 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-27 16:54:28,035 DEBUG   SenderThread:280486 [sender.py:send_request():317] send_request: stop_status
+2022-10-27 16:54:29,669 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:31,670 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:33,671 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:35,672 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:37,673 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:39,673 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:41,167 DEBUG   SenderThread:280486 [sender.py:send():303] send: stats
+2022-10-27 16:54:41,674 INFO    Thread-13 :280486 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/alex_ch/Documents/flax_vit/vit/nn/wandb/run-20221027_165412-1ml9vly4/files/output.log
+2022-10-27 16:54:43,258 DEBUG   HandlerThread:280486 [handler.py:handle_request():138] handle_request: stop_status
+2022-10-27 16:54:43,258 DEBUG   SenderThread:280486 [sender.py:send_request():317] send_request: stop_status
