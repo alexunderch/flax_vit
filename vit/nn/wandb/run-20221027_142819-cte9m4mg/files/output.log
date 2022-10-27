@@ -1,0 +1,19 @@
+  0%|                                                                                                                                                                                                                                                       | 0/3 [00:00<?, ?it/s]INFO:root:training epoch 1
+  0%|                                                                                                                                                                                                                                                       | 0/3 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 130, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 121, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 89, in full_trainining
+    for batch in iter(tfds.as_numpy(train_dataset)):
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/tensorflow_datasets/core/dataset_utils.py", line 65, in _eager_dataset_iterator
+    for elem in ds:
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/tensorflow/python/data/ops/iterator_ops.py", line 766, in __next__
+    return self._next_internal()
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/tensorflow/python/data/ops/iterator_ops.py", line 749, in _next_internal
+    ret = gen_dataset_ops.iterator_get_next(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/tensorflow/python/ops/gen_dataset_ops.py", line 3012, in iterator_get_next
+    _result = pywrap_tfe.TFE_Py_FastPathExecute(
+KeyboardInterrupt
+2022-10-27 14:28:19,998 - root - INFO - training epoch 1

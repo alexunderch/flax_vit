@@ -100,7 +100,7 @@ def test_full_training():
                     dict(weight_decay = .001,
                         learning_rate = 1e-5,
                         warmup_epochs = 1,
-                        num_epochs=  3,
+                        num_epochs=  1,
                         clip_parameter = 1.,
                         batch_size = 1
                         )

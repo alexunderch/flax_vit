@@ -1,0 +1,60 @@
+
+  0%|                                                                                                                                                                                                                                                       | 0/3 [00:00<?, ?it/s]INFO:root:training epoch 1
+2022-10-27 13:19:02,762 - root - INFO - training epoch 1
+2022-10-27 13:31:39,990 - root - INFO - train logs:
+accuracy: 0.016993464902043343
+learning_rate: 4.998366421204992e-06
+loss: 6.320783615112305
+2022-10-27 13:31:39,993 - root - INFO - evaluating epoch 1
+INFO:root:train logs:
+accuracy: 0.016993464902043343
+learning_rate: 4.998366421204992e-06
+loss: 6.320783615112305
+INFO:root:evaluating epoch 1
+2022-10-27 13:33:46,673 - root - INFO - eval logs:
+accuracy: 0.0
+loss: 6.031358242034912
+2022-10-27 13:33:46,683 - root - INFO - saving checkpoint
+INFO:root:eval logs:
+accuracy: 0.0
+loss: 6.031358242034912
+INFO:root:saving checkpoint
+2022-10-27 13:33:47,156 - root - INFO - testing
+INFO:root:testing
+  0%|                                                                                                                                                                                                                                                       | 0/3 [14:44<?, ?it/s]
+[34m[1mwandb[39m[22m: [32m[41mERROR[39m[49m Project alexunderch/training ViT with flax does not contain artifact: "rich-plasma-62-checkpoint:latest"
+Traceback (most recent call last):
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/normalize.py", line 26, in wrapper
+    return func(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/public.py", line 937, in artifact
+    artifact = Artifact(self.client, entity, project, artifact_name)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/public.py", line 4151, in __init__
+    self._load()
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/public.py", line 4735, in _load
+    raise ValueError(
+ValueError: Project alexunderch/training ViT with flax does not contain artifact: "rich-plasma-62-checkpoint:latest"
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 130, in <module>
+    test_full_training()
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/test_training.py", line 121, in test_full_training
+    full_trainining(
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/train_main.py", line 148, in full_trainining
+    restored_best_state = restore_checkpoint_wandb("ckpt_file.pth", restored_best_state)
+  File "/home/alex_ch/Documents/flax_vit/vit/nn/common_utils.py", line 56, in restore_checkpoint_wandb
+    artifact = wandb.use_artifact(
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 255, in wrapper
+    return func(self, *args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/sdk/wandb_run.py", line 2575, in use_artifact
+    artifact = public_api.artifact(type=type, name=name)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/normalize.py", line 62, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/normalize.py", line 26, in wrapper
+    return func(*args, **kwargs)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/public.py", line 937, in artifact
+    artifact = Artifact(self.client, entity, project, artifact_name)
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/public.py", line 4151, in __init__
+    self._load()
+  File "/home/alex_ch/flax_env/lib/python3.9/site-packages/wandb/apis/public.py", line 4735, in _load
+    raise ValueError(
+wandb.errors.CommError: Project alexunderch/training ViT with flax does not contain artifact: "rich-plasma-62-checkpoint:latest"

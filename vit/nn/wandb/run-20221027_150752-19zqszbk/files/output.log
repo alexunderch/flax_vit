@@ -1,0 +1,11 @@
+  0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]INFO:root:training epoch 1
+INFO:root:evaluating epoch 1
+2022-10-27 15:07:53,146 - root - INFO - training epoch 1
+2022-10-27 15:07:53,152 - root - INFO - evaluating epoch 1
+INFO:root:eval logs:
+accuracy: 0.008219177834689617
+loss: 5.851645469665527
+INFO:root:saving checkpoint
+2022-10-27 15:09:09,855 - root - INFO - eval logs:
+accuracy: 0.008219177834689617
+loss: 5.851645469665527

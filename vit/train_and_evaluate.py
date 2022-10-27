@@ -15,6 +15,7 @@ def main():
     image_size = 224
     patch_size = 16
     print(jax.device_count())
+    print(jax.devices())
     
     model_config = dict(
                         n_blocks = 3,

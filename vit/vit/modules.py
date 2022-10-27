@@ -60,10 +60,9 @@ class MultiHeadSelfAttentionLayer(nn.Module):
 
     def prepare_qkv(self, x: jnp.ndarray):
         batch_size, seq_length, hidden_dim = x.shape
-        head_dim = hidden_dim // self.n_heads
-        assert head_dim > 0
+        assert hidden_dim // self.n_heads
         qkv = nn.Dense(3 * hidden_dim, use_bias = self.use_bias)(x)
-        qkv = jnp.swapaxes(qkv.reshape(batch_size, seq_length, head_dim, -1), 1, 2)
+        qkv = jnp.swapaxes(qkv.reshape(batch_size, seq_length, self.n_heads, -1), 1, 2)
         q, k, v = jnp.array_split(qkv, 3, axis = -1)
         return q, k, v
 
@@ -75,8 +74,10 @@ class MultiHeadSelfAttentionLayer(nn.Module):
         q, k, v = self.prepare_qkv(x)
         values, _ = jax.vmap(self.attention_function)(q, k, v, mask = mask)
         values = jnp.swapaxes(values, 1, 2)
-        values =  o_dropout(values).reshape(batch_size, seq_length, hidden_dim)
+        values = values.reshape(batch_size, seq_length, hidden_dim)
+
         values = nn.Dense(hidden_dim, use_bias = self.use_bias)(values)
+        values =  o_dropout(values)
                            
         return values
 

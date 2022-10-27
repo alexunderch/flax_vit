@@ -1,3 +1,4 @@
+from multiprocessing.connection import wait
 import sys
 sys.path.append("..")
 from typing import Dict, List, Optional, Tuple
@@ -5,7 +6,8 @@ from train_utils import (make_update_fn,
                          make_infer_fn,
                         accumulate_metrics, 
                         create_learning_rate_fn, 
-                        init_train_state
+                        init_train_state,
+                        copy_train_state
                         )
 from tf_data_processing.input_pipeline import (prepare_data, 
                                                get_classes, 
@@ -22,7 +24,7 @@ import jax.numpy as jnp
 from wandb_logger import WandbLogger, make_cli_logger
 from flax.training.train_state import TrainState
 import tensorflow_datasets as tfds
-
+from wandb.errors import CommError
 
 def full_trainining(
                     config: Dict,
@@ -103,17 +105,17 @@ def full_trainining(
         cli_logger.log(20, "train logs:\n" + "\n".join([f"{k}: {v}" for k, v in batch_metrics["train"].items()]))
         wandb_logger.log_metrics(batch_metrics["train"], step = epoch, prefix = "train")
 
-        
+        # state = flax.jax_utils.unreplicate(state)
         #### evaluation phase ####
-
         cli_logger.log(level, f"evaluating epoch {epoch}")
+        eval_state = copy_train_state(apply_fn = eval_state.apply_fn,
+                                      params = state.params)
         for batch in iter(tfds.as_numpy(eval_dataset)):
             batch = dict(
                         image = batch[0],
                         label = batch[1]
                         )
 
-                   
             metrics = eval_step( 
                                 state = flax.jax_utils.replicate(eval_state), 
                                 batch = flax.jax_utils.replicate(batch),
@@ -136,31 +138,38 @@ def full_trainining(
         batch_metrics["train"], batch_metrics["eval"] = [], []
         
 
-        #### testing phase ####
-        cli_logger.log(level, f"testing")
-        restored_best_state = init_train_state(
-                                model = VisualTransformer(training = False, **config["model_config"]), 
-                                random_key = rng, 
-                                shape = next(iter(tfds.as_numpy(test_dataset)))[0].shape,
-                                config = config,
-                                steps_per_epoch = 1
-                                )
+    #### testing phase ####
+    cli_logger.log(level, f"testing")
+    restored_best_state = init_train_state(
+                            model = VisualTransformer(training = False, **config["model_config"]), 
+                            random_key = rng, 
+                            shape = next(iter(tfds.as_numpy(test_dataset)))[0].shape,
+                            config = config,
+                            steps_per_epoch = 1
+                            )
+    try:
         restored_best_state = restore_checkpoint_wandb("ckpt_file.pth", restored_best_state)
-        for batch in iter(tfds.as_numpy(test_dataset)):
-            batch = dict(
-                        image = batch[0],
-                        label = batch[1]
-                        )
-            metrics =  eval_step( 
-                                state = flax.jax_utils.replicate(restored_best_state), 
-                                batch = flax.jax_utils.replicate(batch),
-                                rng = flax.jax_utils.replicate(dropout_rng), 
-                                )
-            batch_metrics["test"].append(metrics)
+    except CommError:
+        restored_best_state = TrainState(step = eval_state.step,
+                                            apply_fn = eval_state.apply_fn,
+                                            params = eval_state.params,
+                                            tx = state.tx,
+                                            opt_state = state.opt_state)
+    for batch in iter(tfds.as_numpy(test_dataset)):
+        batch = dict(
+                    image = batch[0],
+                    label = batch[1]
+                    )
+        metrics =  eval_step( 
+                            state = flax.jax_utils.replicate(restored_best_state), 
+                            batch = flax.jax_utils.replicate(batch),
+                            rng = flax.jax_utils.replicate(dropout_rng), 
+                            )
+        batch_metrics["test"].append(metrics)
 
-        batch_metrics["test"] = accumulate_metrics(batch_metrics["test"])
-        cli_logger.log(20, "test logs:\n" + "\n".join([f"{k}: {v}" for k, v in batch_metrics["test"].items()]))
-        logger.log_metrics(batch_metrics["test"], step = epoch, prefix = "test")
+    batch_metrics["test"] = accumulate_metrics(batch_metrics["test"])
+    cli_logger.log(20, "test logs:\n" + "\n".join([f"{k}: {v}" for k, v in batch_metrics["test"].items()]))
+    wandb_logger.log_metrics(batch_metrics["test"], step = epoch, prefix = "test")
 
     return state, eval_state, restored_best_state
 

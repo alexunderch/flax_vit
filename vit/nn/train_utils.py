@@ -146,3 +146,13 @@ def init_train_state(
                                 tx = optimizer(config, steps_per_epoch),
                                 params = variables['params'],
                             )
+
+def copy_train_state(
+                    apply_fn: Callable,
+                    params: Dict
+                    ) -> TrainState:
+    return TrainState.create(   
+                                apply_fn = apply_fn,
+                                params = params,
+                                tx = optax.adam(learning_rate= 1e-2)
+                            )

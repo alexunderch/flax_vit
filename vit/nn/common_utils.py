@@ -43,7 +43,7 @@ def checkpoint_exists(ckpt_file) -> bool:
 def save_checkpoint_wandb(ckpt_path, state: TrainState, step: int):
     
     artifact = wandb.Artifact(
-        f'{wandb.run.name}-checkpoint', type='dataset'
+        f'{wandb.run.name}-checkpoint', type='model'
     )
     with open(ckpt_path, "wb") as outfile:
         outfile.write(msgpack_serialize(to_state_dict(state)))
@@ -54,14 +54,16 @@ def save_checkpoint_wandb(ckpt_path, state: TrainState, step: int):
 def restore_checkpoint_wandb(ckpt_file, state: TrainState):
     assert checkpoint_exists(ckpt_file)
     artifact = wandb.use_artifact(
-        f'{wandb.run.name}-checkpoint:latest'
-    )
-    print(artifact.download())
-    artifact_dir = "." #artifact.download()
+                                    f'{wandb.run.name}-checkpoint:latest',
+                                 )
+    artifact_dir = artifact.download()
     ckpt_path = os.path.join(artifact_dir, ckpt_file)
     with open(ckpt_path, "rb") as data_file:
         byte_data = data_file.read()
     return from_bytes(state, byte_data)
+
+# def hyperparameter_sweep(sweep_config: Dict):
+#     wandb.sweep(sweep_config, project = project_name)
 ####wandb utils
 
 
