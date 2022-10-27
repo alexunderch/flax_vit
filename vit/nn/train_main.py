@@ -77,13 +77,13 @@ def full_trainining(
     
     _, dropout_rng =  jax.random.split(rng)
 
-    state = flax.jax_utils.replicate(state)
     batch_metrics = dict(
                     train = [],
                     eval = [],
                     test = []
                     )
     for epoch in tqdm(range(1, config["num_epochs"] + 1)):
+
         best_epoch_eval_loss = jnp.inf
         # #### training phase ####
         cli_logger.log(level, f"training epoch {epoch}")
@@ -94,7 +94,7 @@ def full_trainining(
                         label = batch[1]
                         )
             state, metrics = train_step(
-                                        state = state,
+                                        state = flax.jax_utils.replicate(state),
                                         batch = flax.jax_utils.replicate(batch),
                                         rng = flax.jax_utils.replicate(dropout_rng),        
                                         )

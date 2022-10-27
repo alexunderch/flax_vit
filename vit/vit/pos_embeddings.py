@@ -1,9 +1,14 @@
-from typing import Callable, Literal, Any, Tuple
+from typing import Callable, Any, Tuple
 import flax.linen as nn
 import jax.numpy as jnp
-import jax.random as jr
 import jax
 import numpy as np
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
 
 class PatchEmbeddings(nn.Module):
 
@@ -53,7 +58,7 @@ class TransformerEmbeddings(nn.Module):
     image_size: int
     patch_size: int
     training: bool
-    type: Literal["learnable", "sinusoid"] = "learnable"
+    type: Literal["learnable", "sinusoid"] = "sinusoid"
     dtype: jnp.dtype = jnp.float32  # the dtype of the computation
 
     def setup(self):
