@@ -98,7 +98,7 @@ class TransformerEncoderBlock(nn.Module):
     attention_function: Optional[Callable] = scaled_dot_product
     
     def setup(self) -> None:
-        self_attn = MultiHeadSelfAttentionLayer(
+        self.self_attn = MultiHeadSelfAttentionLayer(
                             **dict(training = self.training,
                                     dropout_rate = self.dropout_rate_att,
                                     n_heads = self.n_heads,
@@ -106,10 +106,10 @@ class TransformerEncoderBlock(nn.Module):
                                     attention_function = self.attention_function)
                             )
 
-        norm_attention = PreNormLayer(fn = self_attn,
-                                      norm  = nn.LayerNorm())
+        self.norm_attention = PreNormLayer(fn = self.self_attn,
+                                           norm  = nn.LayerNorm())
 
-        self.residual_norm_attention = ResidualWrapper(fn = norm_attention)
+        self.residual_norm_attention = ResidualWrapper(fn = self.norm_attention)
         
         ffd = FeedForwardLayer(
                                 training = self.training,     
@@ -128,5 +128,12 @@ class TransformerEncoderBlock(nn.Module):
         return self.residual_norm_ffd(
             self.residual_norm_attention(x, mask=mask)
         )
+    
+    def get_attention_map(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
+        return self.self_attn.get_attention_map(
+            #NOTE: getting a map of prenormalized input without residual
+            self.norm_attention(x, mask=mask)
+        )
+
 
         

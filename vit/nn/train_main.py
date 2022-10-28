@@ -140,13 +140,7 @@ def full_trainining(
 
     #### testing phase ####
     cli_logger.log(level, f"testing")
-    restored_best_state = init_train_state(
-                            model = VisualTransformer(training = False, **config["model_config"]), 
-                            random_key = rng, 
-                            shape = next(iter(tfds.as_numpy(test_dataset)))[0].shape,
-                            config = config,
-                            steps_per_epoch = 1
-                            )
+    restored_best_state = eval_state
     try:
         restored_best_state = restore_checkpoint_wandb("ckpt_file.pth", restored_best_state)
     except:

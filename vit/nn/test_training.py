@@ -1,4 +1,3 @@
-from distutils.command.config import config
 import sys
 
 
@@ -11,7 +10,10 @@ import jax
 import jax.numpy as jnp
 import optax
 from vit.models import VisualTransformer
-from train_utils import  create_learning_rate_fn, init_train_state
+from train_utils import (create_learning_rate_fn, 
+                         make_infer_fn, 
+                         make_update_fn,
+                         init_train_state)
 from train_main import full_trainining
 
 
@@ -57,13 +59,21 @@ def test_step():
     test_state = TrainState.create(apply_fn=model.apply,
                                    params=params,
                                    tx= optax.adam(learning_rate = 1e-5))
+    
 
+    eval_step = make_infer_fn(
+                                num_classes = 2,
+                                config =test_config  
+                             )
+    train_step = make_update_fn(
+                                create_learning_rate_fn(test_config, 2), 
+                                num_classes = 2, 
+                                config = test_config
+                               )
+    
     print(
         train_step(state = test_state, 
                batch = test_batch, 
-               learning_rate_fn = lr_schedule,
-               num_classes = 2, 
-               config = test_config,
                dropout_rng = dropout_rng)[1]
     )
     
@@ -71,7 +81,6 @@ def test_step():
     print(
         eval_step(state = test_state, 
                batch = test_batch, 
-               num_classes = 2, 
                dropout_rng = dropout_rng)
     )
 

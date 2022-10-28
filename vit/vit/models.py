@@ -35,9 +35,10 @@ class VisualTransformer(nn.Module):
     dropout_embedding: float
     img_params: Tuple[int, int]
     cls_index: int = 0
-
+    
+    
     def setup(self) -> None:
-
+        
         self.apply_embedding = TransformerEmbeddings(
             dropout_rate = self.dropout_embedding,
             latent_dim = self.block_config["latent_dim"],
@@ -56,22 +57,23 @@ class VisualTransformer(nn.Module):
                                    
 
     def __call__(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
-
-        out = self.apply_embedding(x)
         
+        out = self.apply_embedding(x)
+        # self.attention_maps_.append(self.encoder_layers[0].get_attention_map(out, mask))
         out = self.encoder_layers[0](out, mask)
         for layer in self.encoder_layers[1:]:
+            # self.attention_maps_.append(layer.get_attention_map(out, mask))
             out = layer(out, mask)
 
         out = self.head(out[:, self.cls_index, :])
         return out
 
     def get_attention_maps(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> List[jnp.ndarray]:
-        """"""
-        # out = self.apply_embedding(x)
-        # out = self.encoder_layers[0](out, mask)
-        # attention_maps = [self.encoder_layers[0].get_attention_map(out, mask)]
-        # for layer in self.encoder_layers[1:]:
-        #     out = layer(out, mask)
-        #     attention_maps.append(layer.get_attention_map(out, mask))
-        # return attention_maps
+        out = self.apply_embedding(x)
+        attention_maps_= [self.encoder_layers[0].get_attention_map(out, mask)]
+        out = self.encoder_layers[0](out, mask)
+        for layer in self.encoder_layers[1:]:
+            attention_maps_.append(layer.get_attention_map(out, mask))
+            out = layer(out, mask)
+
+        return attention_maps_ 

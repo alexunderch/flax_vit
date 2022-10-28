@@ -28,19 +28,19 @@ def compute_metrics(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) 
     def f1(y_true, y_predicted, label):
         #NOTE: hmhmh
 
-        tp = jnp.sum((y_true == label) & (y_predicted == label))
-        fp = jnp.sum((y_true != label) & (y_predicted == label))
-        fn = jnp.sum((y_predicted != label) & (y_true == label))
-        
+        tp = jnp.sum(jnp.bitwise_and((y_true == label), (y_predicted == label)))
+        fp = jnp.sum(jnp.bitwise_and((y_true != label), (y_predicted == label)))
+        fn = jnp.sum(jnp.bitwise_and((y_predicted != label), (y_true == label)))
+
         precision = tp / (tp + fp + 1e-12)
         recall = tp / (tp + fn + 1e-12)
 
-        return 2 * (precision * recall) / (precision + recall)
+        return 2 * (precision * recall) / (precision + recall + 1e-12)
         
     metrics = {
         'loss': loss,
         'accuracy': accuracy,
-        # 'f1': jnp.array([f1(labels, jnp.argmax(logits, -1), l) for l in range(num_classes)])
+        'f1': jnp.array([f1(labels, jnp.argmax(logits, -1), l) for l in range(num_classes)])
     }
     #mean across all devices batches
     metrics = jax.lax.pmean(metrics, axis_name = 'batch')
