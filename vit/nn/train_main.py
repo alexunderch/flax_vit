@@ -1,27 +1,47 @@
 from multiprocessing.connection import wait
 import sys
 sys.path.append("..")
+sys.path.append(".")
+
 from typing import Dict, List, Optional, Tuple
-from train_utils import (make_update_fn, 
-                         make_infer_fn,
-                        accumulate_metrics, 
-                        create_learning_rate_fn, 
-                        init_train_state,
-                        copy_train_state
-                        )
+try:
+    from .train_utils import (make_update_fn, 
+                            make_infer_fn,
+                            accumulate_metrics, 
+                            create_learning_rate_fn, 
+                            init_train_state,
+                            copy_train_state
+                            )
+
+    from .common_utils import (convert_hidden_state_to_image, 
+                            save_checkpoint_wandb, 
+                            restore_checkpoint_wandb,
+                            )
+    from .wandb_logger import WandbLogger, make_cli_logger
+
+except:
+    from train_utils import (make_update_fn, 
+                            make_infer_fn,
+                            accumulate_metrics, 
+                            create_learning_rate_fn, 
+                            init_train_state,
+                            copy_train_state
+                            )
+
+    from common_utils import (convert_hidden_state_to_image, 
+                            save_checkpoint_wandb, 
+                            restore_checkpoint_wandb,
+                            )
+    from wandb_logger import WandbLogger, make_cli_logger
+
 from tf_data_processing.input_pipeline import (prepare_data, 
-                                               get_classes, 
-                                               prefetch
-                                                )
-from common_utils import (convert_hidden_state_to_image, 
-                          save_checkpoint_wandb, 
-                          restore_checkpoint_wandb,
-                          )
+                                              get_classes, 
+                                              prefetch
+                                              )
 from vit.models import VisualTransformer
 import jax, flax
 from tqdm import tqdm
 import jax.numpy as jnp
-from wandb_logger import WandbLogger, make_cli_logger
 from flax.training.train_state import TrainState
 import tensorflow_datasets as tfds
 from wandb.errors import CommError
