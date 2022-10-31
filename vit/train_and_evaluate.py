@@ -1,11 +1,15 @@
+from signal import set_wakeup_fd
 import sys
+from typing import Dict
 sys.path.append("..")
 sys.path.append(".")
 
 import jax
 import jax.numpy as jnp
 from nn.train_main import full_trainining
-from datetime import datetime
+import wandb
+# from datetime import datetime
+
 def main():
     image_size = 224
     patch_size = 32
@@ -30,7 +34,7 @@ def main():
     config.update(
                     dict(weight_decay = .01,
                         learning_rate = 3e-4,
-                        warmup_epochs = 10,
+                        warmup_epochs = 2,
                         num_epochs=  35,
                         clip_parameter = 10.,
                         batch_size = 30
@@ -62,5 +66,26 @@ def main():
         dataset_kwargs = dataset_kwargs
     )
 
+def hyperparameter_sweep(
+                        project_name: str,
+                        parameters_dict: Dict
+                        ):
+    sweep_configuration = {
+        'method': 'random',
+        'name': 'bayes',
+        'metric': {'goal': 'maximize', 'name': 'eval_f1'},
+        'parameters': parameters_dict
+    }
+
+    sweep_id = wandb.sweep(sweep = sweep_configuration, project = project_name)
+    return sweep_id
+
+
 if __name__ == "__main__":
-    main()
+    parameters_dict =  {
+        # 'batch_size': {'values': [16, 32, 64]},
+        # 'num_epochs': {'values': [5, 10, 15]},
+        'lr': {'max': 0.1, 'min': 1e-4}
+    }
+    sweep_id = hyperparameter_sweep("training-ViT-with-flax", parameters_dict)
+    wandb.agent(sweep_id, function = main, count = 4)
