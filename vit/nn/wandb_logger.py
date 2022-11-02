@@ -35,11 +35,11 @@ class WandbLogger():
                           step: int,
                           prefix: Optional[str] = None
                     ) -> None:
-        if prefix is not None:
-            for k in list(metrics.keys()):
-                metrics[f"{prefix}_{k}"] = metrics.pop(k) 
-
-        wandb.log(metrics, step = step)
+        if prefix is  None:
+            prefix = "x"
+        for k in list(metrics.keys()):
+            prefix_key = f"{prefix}_{k}"
+            wandb.log(prefix_key, metrics.pop(k), step = step)
         
     def log_imagedata(self, images: jnp.ndarray,
                             metadata: Dict

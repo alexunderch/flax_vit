@@ -70,11 +70,11 @@ def prepare_data(dataset_name: str,
         )
     print(
         "Number of eval data points:",
-        num_data * (validation_split)
+        len(eval_dataset)
         )
     print(
         "Number of test data points:",
-         num_data * (1. - validation_split)                            
+        len(test_dataset)                         
         )
     
     return train_dataset, eval_dataset, test_dataset, ds_info

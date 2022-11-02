@@ -58,7 +58,7 @@ class TransformerEmbeddings(nn.Module):
     image_size: int
     patch_size: int
     training: bool
-    type: Literal["learnable", "sinusoid"] = "sinusoid"
+    type: Literal["learnable", "sinusoid"] = "learnable"
     dtype: jnp.dtype = jnp.float32  # the dtype of the computation
 
     def setup(self):

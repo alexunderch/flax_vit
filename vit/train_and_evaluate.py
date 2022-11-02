@@ -1,4 +1,3 @@
-from signal import set_wakeup_fd
 import sys
 from typing import Dict
 sys.path.append("..")
@@ -34,10 +33,10 @@ def main():
     config.update(
                     dict(weight_decay = .01,
                         learning_rate = 3e-4,
-                        warmup_epochs = 2,
-                        num_epochs=  35,
+                        warmup_epochs = 10,
+                        num_epochs=  3,
                         clip_parameter = 10.,
-                        batch_size = 30
+                        batch_size = 40
                         )
                 )
 
@@ -71,9 +70,9 @@ def hyperparameter_sweep(
                         parameters_dict: Dict
                         ):
     sweep_configuration = {
-        'method': 'random',
-        'name': 'bayes',
-        'metric': {'goal': 'maximize', 'name': 'eval_f1'},
+        'method': 'bayes',
+        'name': 'SWEEP',
+        'metric': {'goal': 'maximize', 'name': 'test_f1'},
         'parameters': parameters_dict
     }
 
@@ -84,8 +83,13 @@ def hyperparameter_sweep(
 if __name__ == "__main__":
     parameters_dict =  {
         # 'batch_size': {'values': [16, 32, 64]},
-        # 'num_epochs': {'values': [5, 10, 15]},
-        'lr': {'max': 0.1, 'min': 1e-4}
+        'num_epochs': {'values': [20, 40, 60]},
+        'learning_rate': {'max': 0.1, 'min': 1e-4},
+        'weight_decay': {'max': 0.1, 'min': 1e-4},
+        'clip_parameter': {'max': 10., 'min': .1},
+        'n_blocks': {'values': [4, 8, 12]}
+
     }
-    sweep_id = hyperparameter_sweep("training-ViT-with-flax", parameters_dict)
+    sweep_id = hyperparameter_sweep("training-ViT-with-flax", 
+                                    parameters_dict)
     wandb.agent(sweep_id, function = main, count = 4)
