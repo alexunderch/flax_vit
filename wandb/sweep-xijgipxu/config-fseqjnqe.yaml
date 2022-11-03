@@ -1,0 +1,30 @@
+wandb_version: 1
+
+batch_size:
+  value: 48
+clip_parameter:
+  value: 2.9735885212728626
+learning_rate:
+  value: 0.04958348867185213
+model_config.block_config.dropout_rate_att:
+  value: 0.1826584155928857
+model_config.block_config.dropout_rate_ffd:
+  value: 0.06889602609796619
+model_config.block_config.latent_dim:
+  value: 435
+model_config.block_config.latent_ffd_dim:
+  value: 670
+model_config.block_config.n_heads:
+  value: 3
+model_config.dropout_embedding:
+  value: 0.17335028601725244
+model_config.n_blocks:
+  value: 7
+model_config.output_dim:
+  value: 177
+num_epochs:
+  value: 51
+warmup_epochs:
+  value: 17
+weight_decay:
+  value: 0.0008925067982215743

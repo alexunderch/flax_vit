@@ -13,13 +13,16 @@ def main():
     image_size = 224
     patch_size = 32
     print("devices for training:", jax.device_count())
-    
+    wandb.init(
+        project = "training-ViT-with-flax",
+        job_type = "train_and_eval")
+
     seed = 42
     model_config = dict(
-                        n_blocks = 6,
+                        n_blocks = wandb.config.n_blocks,
                         block_config = {
-                            "latent_dim": 1024 ,
-                            "latent_ffd_dim": 1024,
+                            "latent_dim": 768 ,
+                            "latent_ffd_dim": 768,
                             "n_heads": 8 ,
                             "dropout_rate_ffd": .1 ,
                             "dropout_rate_att": .1
@@ -31,12 +34,12 @@ def main():
     config = dict(model_config = model_config)
 
     config.update(
-                    dict(weight_decay = .01,
-                        learning_rate = 3e-4,
+                    dict(weight_decay = wandb.config.weight_decay,
+                        learning_rate = wandb.config.learning_rate,
                         warmup_epochs = 10,
-                        num_epochs=  3,
-                        clip_parameter = 10.,
-                        batch_size = 40
+                        num_epochs=   wandb.config.num_epochs,
+                        clip_parameter = wandb.config.clip_parameter,
+                        batch_size = wandb.config.batch_size
                         )
                 )
 
@@ -45,7 +48,7 @@ def main():
         wandb_config = dict(
             job_type = "train_and_eval",
             # name = f"run_{datetime.now()}",
-            dir = "../wandb",
+            # dir = "../wandb",
             # entity = "Sacha"
 
         )
@@ -82,8 +85,8 @@ def hyperparameter_sweep(
 
 if __name__ == "__main__":
     parameters_dict =  {
-        # 'batch_size': {'values': [16, 32, 64]},
-        'num_epochs': {'values': [20, 40, 60]},
+        'batch_size': {'values': [40]},
+        'num_epochs': {'values': [20]},
         'learning_rate': {'max': 0.1, 'min': 1e-4},
         'weight_decay': {'max': 0.1, 'min': 1e-4},
         'clip_parameter': {'max': 10., 'min': .1},

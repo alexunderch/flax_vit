@@ -28,6 +28,7 @@ class WandbLogger():
         wandb.init(
             config = self.training_config,
             project = self.project_name,
+            reinit = True,
             **self.wandb_config
         )
     
@@ -39,7 +40,7 @@ class WandbLogger():
             prefix = "x"
         for k in list(metrics.keys()):
             prefix_key = f"{prefix}_{k}"
-            wandb.log(prefix_key, metrics.pop(k), step = step)
+            wandb.log({prefix_key: metrics.pop(k)}, step = step)
         
     def log_imagedata(self, images: jnp.ndarray,
                             metadata: Dict
