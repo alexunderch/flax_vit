@@ -7,7 +7,11 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
-
+try:
+    AUTOTUNE = tf.data.AUTOTUNE     
+except:
+    AUTOTUNE = tf.data.experimental.AUTOTUNE 
+  
 
 def prepare_data(dataset_name: str,
                 validation_split: float,
@@ -33,7 +37,7 @@ def prepare_data(dataset_name: str,
         return image, label
 
     train_dataset = train_dataset.map(
-        normalize__and_resize_img, num_parallel_calls=tf.data.AUTOTUNE
+        normalize__and_resize_img, num_parallel_calls = AUTOTUNE
     )
 
     train_dataset = train_dataset.shuffle(
@@ -42,7 +46,7 @@ def prepare_data(dataset_name: str,
 
     full_test_dataset = full_test_dataset
     full_test_dataset = full_test_dataset.map(
-                                                normalize__and_resize_img, num_parallel_calls=tf.data.AUTOTUNE
+                                                normalize__and_resize_img, num_parallel_calls = AUTOTUNE
                                              )
     num_data = tf.data.experimental.cardinality(
                                                 full_test_dataset

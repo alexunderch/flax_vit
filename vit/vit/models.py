@@ -11,10 +11,8 @@ try:
 except:
     from modules import TransformerEncoderBlock
     from pos_embeddings import TransformerEmbeddings
-# https://huggingface.co/flax-community/vit-gpt2/tree/main/vit_gpt2
-# https://github.com/google/flax/blob/main/examples/nlp_seq/train.py
-# https://github.com/google/flax/blob/main/examples/imagenet/train.py
-# https://github.com/google/flax/blob/main/examples/wmt/models.py
+
+
 class TransformerHead(nn.Module):
     output_dim: int
     training: bool

@@ -4,6 +4,11 @@ import sys
 sys.path.append("..")
 sys.path.append(".")
 
+import os
+os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'] ='false'
+os.environ['XLA_PYTHON_CLIENT_ALLOCATOR']='platform'
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+
 from flax.training.train_state import TrainState
 import jax
 

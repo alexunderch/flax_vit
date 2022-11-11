@@ -57,11 +57,13 @@ class MultiHeadSelfAttentionLayer(nn.Module):
     use_bias: Optional[bool] = False
     attention_function: Optional[Callable] = scaled_dot_product
 
-
     def prepare_qkv(self, x: jnp.ndarray):
         batch_size, seq_length, hidden_dim = x.shape
         assert hidden_dim // self.n_heads
-        qkv = nn.Dense(3 * hidden_dim, use_bias = self.use_bias)(x)
+        qkv = nn.Dense(3 * hidden_dim, 
+                       use_bias = self.use_bias,
+                       kernel_init = nn.initializers.xavier_uniform(),  
+                       bias_init = nn.initializers.zeros)(x)
         qkv = jnp.swapaxes(qkv.reshape(batch_size, seq_length, self.n_heads, -1), 1, 2)
         q, k, v = jnp.array_split(qkv, 3, axis = -1)
         return q, k, v
@@ -76,7 +78,10 @@ class MultiHeadSelfAttentionLayer(nn.Module):
         values = jnp.swapaxes(values, 1, 2)
         values = values.reshape(batch_size, seq_length, hidden_dim)
 
-        values = nn.Dense(hidden_dim, use_bias = self.use_bias)(values)
+        values = nn.Dense(hidden_dim, 
+                          use_bias = self.use_bias,
+                          kernel_init = nn.initializers.xavier_uniform(),  
+                          bias_init = nn.initializers.zeros)(values)
         values =  o_dropout(values)
                            
         return values
