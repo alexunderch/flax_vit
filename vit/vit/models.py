@@ -57,10 +57,8 @@ class VisualTransformer(nn.Module):
     def __call__(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
         
         out = self.apply_embedding(x)
-        # self.attention_maps_.append(self.encoder_layers[0].get_attention_map(out, mask))
         out = self.encoder_layers[0](out, mask)
         for layer in self.encoder_layers[1:]:
-            # self.attention_maps_.append(layer.get_attention_map(out, mask))
             out = layer(out, mask)
 
         out = self.head(out[:, self.cls_index, :])
@@ -68,9 +66,9 @@ class VisualTransformer(nn.Module):
 
     def get_attention_maps(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> List[jnp.ndarray]:
         out = self.apply_embedding(x)
-        attention_maps_= [self.encoder_layers[0].get_attention_map(out, mask)]
-        out = self.encoder_layers[0](out, mask)
-        for layer in self.encoder_layers[1:]:
+        attention_maps_= []
+        for layer in self.encoder_layers:
+            print(layer)
             attention_maps_.append(layer.get_attention_map(out, mask))
             out = layer(out, mask)
 

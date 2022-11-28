@@ -65,13 +65,3 @@ def restore_checkpoint_wandb(ckpt_file, state: TrainState):
 # def hyperparameter_sweep(sweep_config: Dict):
 #     wandb.sweep(sweep_config, project = project_name)
 ####wandb utils
-
-
-def convert_hidden_state_to_image(input_data: jnp.ndarray, idx: int) -> jnp.ndarray:
-    
-    """"""
-    # input_data = jax.device_get(input_data[idx])
-    # attn_maps = [jax.device_get(m[idx]) for m in attn_maps]
-    # foreach head
-    
-    

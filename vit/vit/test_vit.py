@@ -25,8 +25,9 @@ def test_transformer():
     params = model.init({"params":rng, "dropout": dropout_rng}, x)
     print(jax.tree_map(lambda x: x.shape, params))
     _ = model.apply(params, x, rngs={'dropout': dropout_rng})
-    # att_maps = model.apply(params, x, rngs={'dropout': dropout_rng}, method = VisualTransformer.get_attention_maps) 
-    # print(att_maps[0].shape)
+    binded_mod = model.bind(params, rngs={'dropout': dropout_rng})
+    att_maps = binded_mod.get_attention_maps(x = x)
+    print(att_maps[0].shape)
 
 
 if __name__ == "__main__":

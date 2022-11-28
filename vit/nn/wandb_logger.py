@@ -3,6 +3,7 @@ import wandb
 import jax.numpy as jnp
 from dataclasses import dataclass
 import logging
+import jax
 import sys
 
 def make_cli_logger() -> Tuple[int, logging.Logger]:
@@ -42,9 +43,18 @@ class WandbLogger():
             prefix_key = f"{prefix}_{k}"
             wandb.log({prefix_key: metrics.pop(k)}, step = step)
         
-    def log_imagedata(self, images: jnp.ndarray,
-                            metadata: Dict
-                     ) -> None:
-        #TODO: more appropriate logging
-        images = wandb.Image(images, caption = metadata["caption"])
-        wandb.log({metadata["log_as"]: images})
+    def log_attentionheatmaps(self, data: jnp.ndarray,
+                                    metadata: Dict,
+                                    idx: int = 0
+                            ) -> None:
+        
+        attn_maps = [m[idx] for m in jax.device_get(data[idx])]
+        # wandb.log({'heatmap_with_text': wandb.plots.HeatMap(x_labels, y_labels, matrix_values, show_text=False)})
+        # wandb.log({"conf_mat" : wandb.plot.confusion_matrix(probs=None,
+        #                 y_true=ground_truth, preds=predictions,
+        #                 class_names=class_names)})
+
+    
+        # #TODO: more appropriate logging
+        # images = wandb.Image(images, caption = metadata["caption"])
+        # wandb.log({metadata["log_as"]: images})

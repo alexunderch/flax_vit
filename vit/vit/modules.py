@@ -22,7 +22,9 @@ class ResidualWrapper(nn.Module):
 
     @nn.compact
     def __call__(self, x: jnp.ndarray, **kwargs) -> jnp.ndarray:
-        return x + self.fn(x, **kwargs)     
+        result = self.fn(x, **kwargs) 
+        result =  result if isinstance(result, jnp.ndarray) else result[0] 
+        return x + result    
 
 class PreNormLayer(nn.Module):
     fn: nn.Module
@@ -30,7 +32,8 @@ class PreNormLayer(nn.Module):
 
     @nn.compact
     def __call__(self, x: jnp.ndarray, **kwargs) -> jnp.ndarray:
-        return self.fn(self.norm(x), **kwargs)      
+        result = self.fn(self.norm(x), **kwargs)
+        return result if isinstance(result, jnp.ndarray) else result[0]    
 
 class FeedForwardLayer(nn.Module):
     training: bool
@@ -57,6 +60,7 @@ class MultiHeadSelfAttentionLayer(nn.Module):
     use_bias: Optional[bool] = False
     attention_function: Optional[Callable] = scaled_dot_product
 
+    
     def prepare_qkv(self, x: jnp.ndarray):
         batch_size, seq_length, hidden_dim = x.shape
         assert hidden_dim // self.n_heads
@@ -74,7 +78,7 @@ class MultiHeadSelfAttentionLayer(nn.Module):
         o_dropout = nn.Dropout(self.dropout_rate, deterministic = not self.training)
 
         q, k, v = self.prepare_qkv(x)
-        values, _ = jax.vmap(self.attention_function)(q, k, v, mask = mask)
+        values, attention = jax.vmap(self.attention_function)(q, k, v, mask = mask)
         values = jnp.swapaxes(values, 1, 2)
         values = values.reshape(batch_size, seq_length, hidden_dim)
 
@@ -84,12 +88,7 @@ class MultiHeadSelfAttentionLayer(nn.Module):
                           bias_init = nn.initializers.zeros)(values)
         values =  o_dropout(values)
                            
-        return values
-
-    def get_attention_map(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
-        q, k, v = self.prepare_qkv(x)
-        return self.attention_function(q, k, v, mask = mask)[1]
-
+        return values, attention
         
 
 class TransformerEncoderBlock(nn.Module):
@@ -135,10 +134,10 @@ class TransformerEncoderBlock(nn.Module):
         )
     
     def get_attention_map(self, x: jnp.ndarray, mask: Optional[jnp.ndarray] = None) -> jnp.ndarray:
-        return self.self_attn.get_attention_map(
+        return self.self_attn(
             #NOTE: getting a map of prenormalized input without residual
             self.norm_attention(x, mask=mask)
-        )
+        )[1]
 
 
         

@@ -4,8 +4,10 @@ import flax
 import optax
 import jax
 from flax.training.train_state import TrainState
+from flax.core import freeze, unfreeze
 
-from typing import Dict, Callable, Tuple, List
+
+from typing import Dict, Callable, Tuple, List, Optional
 
 @functools.partial(jax.jit, static_argnums=2)
 def cross_entropy_loss(logits: jnp.ndarray, labels: jnp.ndarray, num_classes: int) -> jnp.ndarray:
@@ -118,6 +120,7 @@ def make_infer_fn(num_classes: int,
                                 batch['image'], 
                                 mask = None,
                                 rngs = dict(dropout = rng))
+
         return compute_metrics(logits, batch['label'], num_classes)
     
     return jax.pmap(jax.jit(eval_step), axis_name = "batch")
@@ -135,16 +138,24 @@ def init_train_state(
                     random_key, 
                     shape: tuple, 
                     config: Dict,
-                    steps_per_epoch: int
+                    steps_per_epoch: int,
+                    pretrained_params: Optional[Dict] = None
                     ) -> TrainState:
     _, dropout_rng = jax.random.split(random_key)
     random_keys = dict(params = random_key, 
                        dropout = dropout_rng)
-    variables = model.init(random_keys, jnp.ones(shape))
+    variables = model.init(random_keys, jnp.ones(shape))["params"]
+    
+    if pretrained_params is not None:
+        pretrained_params = unfreeze(pretrained_params)
+        variables = unfreeze(variables)
+        pretrained_params["head"] = variables["head"]
+        variables = freeze(pretrained_params)
+
     return TrainState.create(   
                                 apply_fn = model.apply,
                                 tx = optimizer(config, steps_per_epoch),
-                                params = variables['params'],
+                                params = variables,
                             )
 
 def copy_train_state(
