@@ -1,2 +1,3 @@
-vit/nn/wandb
-vit/nn/ckpnt.pth
+./wandb/*
+./vit/nn/ckpnt.pth
+./vit/nn/wandb/*
